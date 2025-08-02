@@ -39,16 +39,18 @@ const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
  * 3. Under the "General" tab, scroll down to "Your apps".
  * 4. Select the app you registered for this project (or create a new web app).
  * 5. Copy the `firebaseConfig` object and paste it below, replacing the placeholder.
+ * * !!! CRITICAL STEP: ENABLE AUTHENTICATION PROVIDERS !!!
+ * After you set up the config, go to "Authentication" in your Firebase console,
+ * click "Get started", and enable the "Anonymous" and "Email/Password" sign-in methods.
  * ====================================================================================
  */
 const firebaseConfig = typeof __firebase_config !== 'undefined' && __firebase_config ? JSON.parse(__firebase_config) : {
-  apiKey: "AIzaSyCS0Hp45HBPD-jn3zPn25Rt-NzdCTRqu6k",
-  authDomain: "geminiversionqcs.firebaseapp.com",
-  projectId: "geminiversionqcs",
-  storageBucket: "geminiversionqcs.firebasestorage.app",
-  messagingSenderId: "49386781237",
-  appId: "1:49386781237:web:5ced1a9238de84f54ecf7c",
-  measurementId: "G-M2NWL4Y1C5"
+    apiKey: "your-api-key", // <-- REPLACE THIS WITH YOUR API KEY
+    authDomain: "your-project-id.firebaseapp.com", // <-- REPLACE THIS WITH YOUR AUTH DOMAIN
+    projectId: "your-project-id", // <-- REPLACE THIS WITH YOUR PROJECT ID
+    storageBucket: "your-project-id.appspot.com", // <-- REPLACE THIS WITH YOUR STORAGE BUCKET
+    messagingSenderId: "your-sender-id", // <-- REPLACE THIS WITH YOUR SENDER ID
+    appId: "your-app-id" // <-- REPLACE THIS WITH YOUR APP ID
 };
 const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : '';
 const googleProvider = new GoogleAuthProvider();
@@ -442,6 +444,29 @@ async function handleChatMessageSend(event) {
     chatInput.value = '';
 }
 
+// This function checks the auth state on page load and redirects if needed.
+function checkAuthAndRedirect(user) {
+    const isLoginPage = window.location.pathname.endsWith('index.html') || window.location.pathname === '/';
+    const isDashboardPage = window.location.pathname.endsWith('dashboard.html');
+
+    if (user && user.isAnonymous === false) {
+        if (isLoginPage) {
+            window.location.href = 'dashboard.html';
+        }
+        hideModal('auth-modal');
+    } else if (user && user.isAnonymous === true) {
+        // User is anonymous, allow them to view public pages but redirect from protected ones.
+        if (isDashboardPage) {
+            window.location.href = 'index.html';
+        }
+    } else {
+        // User is not authenticated, redirect from protected pages.
+        if (isDashboardPage) {
+            window.location.href = 'index.html';
+        }
+    }
+}
+
 // --- Main Initialization ---
 document.addEventListener('DOMContentLoaded', async () => {
     setupHeaderListeners(); // Setup listeners for the now-embedded header
@@ -452,6 +477,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const app = initializeApp(firebaseConfig);
         db = getFirestore(app);
         auth = getAuth(app);
+        
+        console.log('Firebase App Initialized with Project ID:', firebaseConfig.projectId);
 
         // --- AUTH LOGIC ---
         // Login with email/password
@@ -462,8 +489,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const email = loginForm.email.value;
                 const password = loginForm.password.value;
                 try {
+                    // Sign in, but DON'T redirect immediately. The onAuthStateChanged listener will handle it.
                     await signInWithEmailAndPassword(auth, email, password);
-                    window.location.href = 'dashboard.html';
                 } catch (error) {
                     showMessage('login-error', error.message, 'error');
                 }
@@ -479,14 +506,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const password = signupForm.password.value;
                 try {
                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                    // Create user profile in Firestore
                     const user = userCredential.user;
                     await setDoc(doc(db, 'artifacts', appId, 'users', user.uid), {
                         email: user.email,
                         role: 'guest',
                         createdAt: serverTimestamp()
                     });
-                    window.location.href = 'dashboard.html';
+                    // Sign up is successful, the onAuthStateChanged listener will handle the redirect.
                 } catch (error) {
                     showMessage('signup-error', error.message, 'error');
                 }
@@ -498,8 +524,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (googleLoginBtn) {
             googleLoginBtn.addEventListener('click', async () => {
                 try {
+                    // Sign in with Google, the onAuthStateChanged listener will handle the redirect.
                     await signInWithPopup(auth, googleProvider);
-                    window.location.href = 'dashboard.html';
                 } catch (error) {
                     showMessage('login-error', error.message, 'error');
                 }
@@ -545,21 +571,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
 
-        // Listen for authentication state changes
+        // Listen for authentication state changes and handle redirects
         onAuthStateChanged(auth, async (user) => {
+            checkAuthAndRedirect(user); // New function to handle redirects
             if (user) {
-                // User is signed in
                 await handleUserOnboarding(user);
             } else {
-                // User is signed out or anonymous
                 userRole = 'guest';
                 userId = null;
                 updateNavForUser(null);
-                
-                // If on a protected page without a user, redirect
-                if (['dashboard.html', 'admin.html', 'sweepstakes.html', 'vip.html', 'chat.html'].some(page => window.location.pathname.endsWith(page))) {
-                     window.location.href = 'index.html';
-                }
             }
         });
 
@@ -582,3 +602,4 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 });
+
