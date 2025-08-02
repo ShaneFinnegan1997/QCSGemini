@@ -1,0 +1,24 @@
+<!-- qc-sweepstakes-sketch/sweepstakes.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QC Sweepstakes - All Sweepstakes</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="script.js"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col">
+    <div id="header-container"></div>
+    <main class="container flex-grow">
+        <section id="sweepstakes-page" class="mt-8" style="display: none;">
+            <h1 class="text-3xl font-bold mb-6">Available Sweepstakes</h1>
+            <div id="sweepstakes-list" class="grid lg:grid-cols-2 gap-6">
+                <!-- Sweepstakes cards will be dynamically inserted here -->
+            </div>
+        </section>
+    </main>
+</body>
+</html>
