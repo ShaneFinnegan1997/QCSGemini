@@ -1,0 +1,29 @@
+<!-- qc-sweepstakes-sketch/chat.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QC Sweepstakes - Chat</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="script.js"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col">
+    <div id="header-container"></div>
+    <main class="container flex-grow flex items-center justify-center">
+        <section id="chat-page" class="mt-8 w-full max-w-2xl" style="display: none;">
+            <div class="chat-container">
+                <div id="chat-messages" class="chat-messages">
+                    <!-- Chat messages will be dynamically inserted here -->
+                </div>
+                <form id="chat-form" class="chat-input-container">
+                    <input type="text" id="chat-input" placeholder="Type a message..." class="form-input flex-grow mr-2" required>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
