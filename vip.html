@@ -1,0 +1,59 @@
+<!-- qc-sweepstakes-sketch/vip.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QC Sweepstakes - VIP Tiers</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="script.js"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col">
+    <div id="header-container"></div>
+    <main class="container flex-grow">
+        <section id="vip-page" class="mt-8" style="display: none;">
+            <h1 class="text-3xl font-bold text-center mb-6">Upgrade to a VIP Tier</h1>
+            <p id="current-vip-status" class="text-center mb-8 text-lg">Current Status: Standard</p>
+
+            <form id="vip-form" class="grid md:grid-cols-3 gap-6">
+                <!-- Tier 1 -->
+                <div class="bg-gray-800 rounded-xl p-6 shadow-lg text-center border-2 border-gray-700 hover:border-yellow-400 transition-colors">
+                    <h3 class="text-2xl font-bold mb-2">Tier 1</h3>
+                    <p class="text-xl font-semibold text-yellow-400 mb-4">$9.99/mo</p>
+                    <ul class="text-gray-300 text-left mb-6">
+                        <li class="flex items-center mb-2"><span class="w-4 h-4 mr-2 text-green-400">✅</span> Tier 1 Badge</li>
+                        <li class="flex items-center mb-2"><span class="w-4 h-4 mr-2 text-green-400">✅</span> More Entries</li>
+                        <li class="flex items-center"><span class="w-4 h-4 mr-2 text-red-400">❌</span> Exclusive Events</li>
+                    </ul>
+                    <button type="submit" name="tier" value="tier1" class="btn btn-primary w-full">Activate Tier 1</button>
+                </div>
+                <!-- Tier 2 -->
+                <div class="bg-gray-800 rounded-xl p-6 shadow-lg text-center border-2 border-gray-700 hover:border-gray-300 transition-colors">
+                    <h3 class="text-2xl font-bold mb-2">Tier 2</h3>
+                    <p class="text-xl font-semibold text-gray-300 mb-4">$14.99/mo</p>
+                    <ul class="text-gray-300 text-left mb-6">
+                        <li class="flex items-center mb-2"><span class="w-4 h-4 mr-2 text-green-400">✅</span> All Tier 1 perks</li>
+                        <li class="flex items-center mb-2"><span class="w-4 h-4 mr-2 text-green-400">✅</span> Priority Support</li>
+                        <li class="flex items-center"><span class="w-4 h-4 mr-2 text-green-400">✅</span> Exclusive Events</li>
+                    </ul>
+                    <button type="submit" name="tier" value="tier2" class="btn btn-primary w-full">Activate Tier 2</button>
+                </div>
+                <!-- Elite Tier -->
+                <div class="bg-gray-800 rounded-xl p-6 shadow-lg text-center border-2 border-gray-700 hover:border-yellow-500 transition-colors">
+                    <h3 class="text-2xl font-bold mb-2 text-yellow-500">Elite Tier</h3>
+                    <p class="text-xl font-semibold text-yellow-500 mb-4">$29.99/mo</p>
+                    <ul class="text-gray-300 text-left mb-6">
+                        <li class="flex items-center mb-2"><span class="w-4 h-4 mr-2 text-green-400">✅</span> All Tier 1 & 2 perks</li>
+                        <li class="flex items-center mb-2"><span class="w-4 h-4 mr-2 text-green-400">✅</span> VIP-only Giveaways</li>
+                        <li class="flex items-center"><span class="w-4 h-4 mr-2 text-green-400">✅</span> Personal Host Tools</li>
+                    </ul>
+                    <button type="submit" name="tier" value="elite" id="activate-elite-btn" class="btn btn-primary w-full">Activate Elite</button>
+                </div>
+            </form>
+
+        </section>
+    </main>
+</body>
+</html>
