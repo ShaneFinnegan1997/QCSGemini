@@ -28,6 +28,11 @@ import {
 // --- Global Variables ---
 let db, auth, userId, userRole, userProfile;
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+/**
+ * IMPORTANT: You must replace these placeholder values with your actual Firebase project configuration.
+ * Find your config in the Firebase Console under "Project settings" -> "Your apps".
+ */
 const firebaseConfig = typeof __firebase_config !== 'undefined' && __firebase_config ? JSON.parse(__firebase_config) : {
     apiKey: "AIzaSyCS0Hp45HBPD-jn3zPn25Rt-NzdCTRqu6k",
     authDomain: "geminiversionqcs.firebaseapp.com",
@@ -72,23 +77,6 @@ function hideModal(modalId) {
 }
 
 // --- Header and Navigation Functions ---
-async function loadHeader() {
-    try {
-        const response = await fetch('header.html');
-        if (!response.ok) throw new Error('Failed to load header.html');
-        const headerHtml = await response.text();
-        const headerContainer = document.getElementById('header-container');
-        if (headerContainer) {
-            headerContainer.innerHTML = headerHtml;
-            setupHeaderListeners();
-        } else {
-            console.error("Header placeholder not found!");
-        }
-    } catch (error) {
-        console.error("Error loading header:", error);
-    }
-}
-
 function setupHeaderListeners() {
     const hamburgerBtn = document.getElementById('hamburger-menu-btn');
     const navLinks = document.getElementById('nav-links');
@@ -164,7 +152,7 @@ function updateNavForUser(user, role = 'guest') {
         if (navAdminLink) navAdminLink.style.display = 'none';
         if (navHostLink) navHostLink.style.display = 'none';
         // Redirect non-authenticated users from protected pages
-        if (['dashboard.html', 'admin.html', 'host.html', 'chat.html'].some(page => window.location.pathname.endsWith(page))) {
+        if (['dashboard.html', 'admin.html', 'sweepstakes.html', 'vip.html', 'chat.html'].some(page => window.location.pathname.endsWith(page))) {
              window.location.href = 'index.html';
         }
     }
@@ -247,7 +235,8 @@ async function handleUserOnboarding(user) {
 function updateDashboardUI() {
     if (document.getElementById('dashboard-content') && userProfile) {
         document.getElementById('user-display-name').textContent = userProfile.displayName;
-        document.getElementById('user-role-display').textContent = `Your role: ${userRole}`;
+        document.getElementById('user-role-badge').textContent = userProfile.role;
+        document.getElementById('user-role-badge').className = `ml-4 role-badge ${userProfile.role.replace(' ', '_')}`;
         document.getElementById('user-entries').textContent = 'Mock: 5'; // Mock data
         document.getElementById('user-wins').textContent = 'Mock: 1'; // Mock data
         document.getElementById('wallet-balance').textContent = `Mock: $${userProfile.wallets.individual.toFixed(2)}`;
@@ -447,7 +436,7 @@ async function handleChatMessageSend(event) {
 
 // --- Main Initialization ---
 document.addEventListener('DOMContentLoaded', async () => {
-    await loadHeader();
+    setupHeaderListeners(); // Setup listeners for the now-embedded header
     checkAdBlock();
 
     // Firebase initialization
@@ -526,6 +515,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (chatForm) {
             chatForm.addEventListener('submit', handleChatMessageSend);
         }
+        
+        // Listeners for showing/hiding login/signup forms
+        const authForms = document.getElementById('auth-forms');
+        const signupFormContainer = document.getElementById('signup-form-container');
+        const showSignupLink = document.getElementById('show-signup');
+        const showLoginLink = document.getElementById('show-login');
+        if (showSignupLink) {
+            showSignupLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (authForms) authForms.style.display = 'none';
+                if (signupFormContainer) signupFormContainer.style.display = 'block';
+            });
+        }
+        if (showLoginLink) {
+            showLoginLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (authForms) authForms.style.display = 'block';
+                if (signupFormContainer) signupFormContainer.style.display = 'none';
+            });
+        }
+
 
         // Listen for authentication state changes
         onAuthStateChanged(auth, async (user) => {
@@ -558,7 +568,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (mainContainer) {
             mainContainer.innerHTML = `<div class="p-4 bg-red-100 text-red-800 rounded-lg shadow-lg mt-8">
                 <h3 class="font-bold">Initialization Error</h3>
-                <p>Failed to initialize the application. Please check the console for details.</p>
+                <p>Failed to initialize the application. Please ensure your Firebase config in script.js is correct and authentication is enabled in your project.</p>
+                <p>Error details: ${error.message}</p>
             </div>`;
         }
     }
