@@ -1,0 +1,59 @@
+<!-- qc-sweepstakes-sketch/admin.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QC Sweepstakes - Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="script.js"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col">
+    <div id="header-container"></div>
+    <main class="container flex-grow">
+        <section id="admin-panel" class="mt-8" style="display: none;">
+            <h1 class="text-3xl font-bold mb-6">Admin Dashboard</h1>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- User Management -->
+                <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
+                    <h3 class="text-2xl font-bold mb-4">User Management</h3>
+                    <div id="users-list" class="space-y-4">
+                        <p class="text-gray-500">Loading user data...</p>
+                    </div>
+                </div>
+
+                <!-- Verification Requests -->
+                <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
+                    <h3 class="text-2xl font-bold mb-4">Verification Requests (Mock)</h3>
+                    <div id="verification-requests" class="space-y-4">
+                        <p class="text-gray-500">No pending requests.</p>
+                    </div>
+                </div>
+
+                <!-- Sweepstakes Management -->
+                <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
+                    <h3 class="text-2xl font-bold mb-4">Sweepstakes Management</h3>
+                    <div id="sweepstakes-management-list">
+                        <p class="text-gray-500">Sweepstakes creation and management tools would go here.</p>
+                    </div>
+                </div>
+
+                <!-- VIP & Promotions -->
+                <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
+                    <h3 class="text-2xl font-bold mb-4">VIP & Promotions</h3>
+                    <div class="flex items-center justify-between">
+                        <p>Enable VIP Promotions:</p>
+                        <label class="switch">
+                            <input type="checkbox" id="vip-promo-toggle">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
