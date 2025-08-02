@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SwiftPrizes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100 text-gray-900 flex flex-col min-h-screen">
+
+    <!-- AdBlock Modal -->
+    <div id="adblock-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full text-center">
+            <h3 class="text-2xl font-bold mb-4">Ad Blocker Detected</h3>
+            <p class="text-gray-600 mb-6">Our site is supported by non-intrusive ads. Please consider disabling your ad blocker to help us keep this service free.</p>
+            <button onclick="hideModal('adblock-modal')" class="bg-blue-500 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-600 transition">Continue to site</button>
+        </div>
+    </div>
+    
+    <!-- Onboarding Modal -->
+    <div id="onboarding-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full text-center">
+            <h3 class="text-2xl font-bold mb-4">Welcome to our community!</h3>
+            <p class="text-gray-600 mb-6">We're excited to have you. You can now explore sweepstakes, enter to win prizes, and participate in our community chat. Start by updating your profile on the dashboard!</p>
+            <button onclick="hideModal('onboarding-modal')" class="bg-blue-500 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-600 transition">Get Started</button>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="bg-white shadow-md sticky top-0 z-40">
+        <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-2">
+                <span class="text-3xl text-blue-600"><i class="fas fa-gem"></i></span>
+                <span class="text-2xl font-bold text-gray-800">SwiftPrizes</span>
+            </a>
+            
+            <!-- Hamburger Menu for Mobile -->
+            <button id="hamburger-menu-btn" class="text-gray-500 hover:text-gray-700 focus:outline-none lg:hidden">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            
+            <!-- Navigation Links -->
+            <nav id="nav-links" class="hidden lg:flex flex-grow items-center justify-center space-x-6">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="sweepstakes.html" class="nav-link">Sweepstakes</a>
+                <a href="vip.html" class="nav-link">VIP</a>
+                <a href="chat.html" class="nav-link">Chat</a>
+                <a href="admin.html" id="nav-admin-link" class="nav-link hidden">Admin</a>
+                <a href="host.html" id="nav-host-link" class="nav-link hidden">Host Panel</a>
+            </nav>
+            
+            <!-- Auth & User Profile Links -->
+            <div id="auth-links" class="hidden lg:flex items-center space-x-4">
+                <!-- Links for logged-out users -->
+                <div id="auth-nav-links" class="flex items-center space-x-4">
+                    <button class="nav-link font-bold text-blue-600" onclick="showModal('auth-modal')">Log In</button>
+                    <button class="btn btn-secondary" onclick="showModal('auth-modal')">Sign Up</button>
+                </div>
+                <!-- Links for logged-in users -->
+                <div id="user-nav-links" class="hidden items-center space-x-4">
+                    <button id="dark-mode-toggle" class="text-gray-500 hover:text-gray-700 transition">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div id="header-profile" class="hidden items-center space-x-2 cursor-pointer">
+                        <img src="https://placehold.co/40x40" alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-blue-500">
+                        <span class="font-semibold text-gray-700" id="user-display-name">Guest</span>
+                        <span id="nav-user-badge" class="role-badge guest">Guest</span>
+                    </div>
+                    <button id="logout-btn" class="btn btn-secondary">Log Out</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Announcement Banner -->
+        <div id="announcement-banner" class="bg-blue-600 text-white text-center py-2 relative">
+            <div class="container mx-auto px-6">
+                <p class="font-medium text-sm">Join our new VIP program and get exclusive entries! <a href="#" class="font-bold underline">Learn More</a></p>
+            </div>
+            <button id="close-banner-btn" class="absolute top-1/2 right-4 -translate-y-1/2 text-white opacity-75 hover:opacity-100 transition">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container mx-auto flex-grow p-6">
+        <div id="dashboard-content" class="bg-white p-8 rounded-xl shadow-lg">
+            <div class="flex items-center mb-6">
+                <img id="user-avatar" src="https://placehold.co/80x80" alt="User Avatar" class="w-20 h-20 rounded-full border-4 border-blue-500">
+                <div class="ml-4">
+                    <div class="flex items-center">
+                        <h1 id="user-display-name" class="text-3xl font-bold text-gray-800">Loading...</h1>
+                        <span id="user-role-badge" class="ml-4 role-badge guest">Guest</span>
+                    </div>
+                    <p id="user-email-display" class="text-gray-500 mt-1">Loading...</p>
+                    <span id="vip-status" class="vip-badge standard mt-2">Standard</span>
+                </div>
+            </div>
+
+            <!-- Dashboard Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                <div class="dashboard-stat-card">
+                    <div class="flex items-center">
+                        <i class="fas fa-wallet text-blue-500 text-2xl mr-4"></i>
+                        <div>
+                            <p class="text-sm text-gray-500">Wallet Balance</p>
+                            <p id="wallet-balance" class="text-2xl font-bold text-gray-800">$0.00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-stat-card">
+                    <div class="flex items-center">
+                        <i class="fas fa-ticket-alt text-green-500 text-2xl mr-4"></i>
+                        <div>
+                            <p class="text-sm text-gray-500">Total Entries</p>
+                            <p id="user-entries" class="text-2xl font-bold text-gray-800">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-stat-card">
+                    <div class="flex items-center">
+                        <i class="fas fa-trophy text-yellow-500 text-2xl mr-4"></i>
+                        <div>
+                            <p class="text-sm text-gray-500">Sweepstakes Won</p>
+                            <p id="user-wins" class="text-2xl font-bold text-gray-800">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Sweepstakes Section -->
+            <div class="mt-12">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Active Sweepstakes</h2>
+                <div id="sweepstakes-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Sweepstakes cards will be inserted here by script.js -->
+                    <p class="text-gray-500 text-center col-span-full">Loading sweepstakes...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="bg-gray-800 text-gray-300 py-6">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 SwiftPrizes. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <!-- Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .nav-link { @apply text-gray-600 hover:text-blue-600 transition; }
+        .btn { @apply font-bold py-2 px-4 rounded-full transition; }
+        .btn-primary { @apply bg-blue-600 text-white hover:bg-blue-700; }
+        .btn-secondary { @apply bg-white text-gray-800 border border-gray-300 hover:bg-gray-100; }
+        .btn-google { @apply bg-red-500 text-white hover:bg-red-600; }
+        .form-input { @apply w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition; }
+        .role-badge { @apply text-xs font-bold uppercase py-1 px-2 rounded-full; }
+        .role-badge.guest { @apply bg-gray-400 text-white; }
+        .role-badge.user { @apply bg-blue-500 text-white; }
+        .role-badge.community_host { @apply bg-green-500 text-white; }
+        .role-badge.official_host { @apply bg-yellow-500 text-white; }
+        .role-badge.admin { @apply bg-red-500 text-white; }
+        .role-badge.owner { @apply bg-purple-500 text-white; }
+        .vip-badge { @apply text-xs font-bold uppercase py-1 px-2 rounded-full; }
+        .vip-badge.standard { @apply bg-gray-200 text-gray-700; }
+        .vip-badge.silver { @apply bg-gray-400 text-white; }
+        .vip-badge.gold { @apply bg-yellow-500 text-white; }
+        .vip-badge.elite { @apply bg-purple-600 text-white; }
+        .dashboard-stat-card { @apply bg-gray-50 p-6 rounded-lg shadow-inner; }
+        .sweepstakes-card { @apply bg-white rounded-lg shadow-md p-6 flex flex-col justify-between; }
+        .sweepstakes-card img { @apply h-48 w-full object-cover rounded-md; }
+        .sweepstakes-status { @apply text-xs font-bold uppercase py-1 px-2 rounded-full; }
+        .sweepstakes-status.active { @apply bg-green-500 text-white; }
+        .sweepstakes-status.upcoming { @apply bg-blue-500 text-white; }
+        .sweepstakes-status.completed { @apply bg-gray-500 text-white; }
+        
+        .hamburger-menu-btn.open .fa-bars { display: none; }
+        .hamburger-menu-btn .fa-times { display: none; }
+        .hamburger-menu-btn.open .fa-times { display: block; }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+        body.dark-mode .bg-white { background-color: #2d3748; }
+        body.dark-mode .text-gray-900 { color: #e2e8f0; }
+        body.dark-mode .text-gray-800 { color: #f7fafc; }
+        body.dark-mode .text-gray-700 { color: #cbd5e0; }
+        body.dark-mode .text-gray-600 { color: #a0aec0; }
+        body.dark-mode .bg-gray-100 { background-color: #2d3748; }
+        body.dark-mode header { background-color: #2d3748; }
+        body.dark-mode footer { background-color: #1a202c; }
+        body.dark-mode .nav-link { color: #cbd5e0; }
+        body.dark-mode .shadow-md { box-shadow: none; }
+        body.dark-mode .bg-white.p-8.rounded-xl.shadow-lg { background-color: #2d3748; }
+        body.dark-mode .dashboard-stat-card { 
+            background-color: #1a202c; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        body.dark-mode .sweepstakes-card { background-color: #1a202c; }
+        body.dark-mode #dark-mode-toggle { color: #cbd5e0; }
+
+        /* Mobile specific styles */
+        @media (max-width: 1023px) {
+            #nav-links, #auth-links { display: none; }
+            #auth-links { margin-top: 1rem; }
+            #nav-links a, #auth-links button { padding: 0.5rem 1rem; text-align: center; }
+            .hamburger-menu-btn .fa-times { display: none; }
+            .hamburger-menu-btn.open .fa-bars { display: none; }
+            .hamburger-menu-btn.open .fa-times { display: block; }
+        }
+    </style>
+    
+    <script type="module" src="script.js"></script>
+</body>
+</html>
