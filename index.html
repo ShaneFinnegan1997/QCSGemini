@@ -8,7 +8,6 @@
     <title>QC Sweepstakes - Login</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script type="module" src="script.js"></script>
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex flex-col">
     <!-- AdSense Top Banner -->
@@ -23,7 +22,49 @@
          (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
     
-    <div id="header-container"></div>
+    <header class="bg-gray-800 text-white p-4">
+        <!-- Global Announcement Banner -->
+        <div id="announcement-banner" class="bg-yellow-500 text-gray-900 text-center text-sm p-2 rounded-lg mb-4 flex items-center justify-center">
+            <span>✨ Welcome to the QC Sweepstakes beta!</span>
+            <button id="close-banner-btn" class="ml-auto text-gray-900 font-bold">&times;</button>
+        </div>
+        <div class="header-container flex items-center justify-between">
+            <a href="index.html" class="logo text-2xl font-bold">QC Sweepstakes</a>
+            <nav class="flex-grow flex justify-center hidden lg:flex">
+                <ul id="nav-links" class="flex space-x-4">
+                    <li><a href="dashboard.html" class="hover:text-blue-400 transition-colors">Dashboard</a></li>
+                    <li><a href="sweepstakes.html" class="hover:text-blue-400 transition-colors">Sweepstakes</a></li>
+                    <li><a href="vip.html" class="hover:text-blue-400 transition-colors">VIP</a></li>
+                    <li><a href="chat.html" class="hover:text-blue-400 transition-colors">Chat</a></li>
+                    <li id="nav-host-link" style="display: none;"><a href="#" class="hover:text-blue-400 transition-colors">Host Tools</a></li>
+                    <li id="nav-admin-link" style="display: none;"><a href="admin.html" class="hover:text-blue-400 transition-colors">Admin</a></li>
+                </ul>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <div class="flex items-center hidden lg:flex">
+                    <button id="dark-mode-toggle" class="p-2 rounded-full hover:bg-gray-700 transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.593A7.962 7.962 0 0110 18a8 8 0 01-7.293-4.407A8 8 0 0010 17.999 8 8 0 0017.293 13.593z"></path></svg>
+                    </button>
+                </div>
+                <div id="auth-nav-links" class="hidden lg:flex space-x-4">
+                    <a href="index.html" class="btn bg-blue-600 hover:bg-blue-700">Login / Signup</a>
+                </div>
+                <div id="user-nav-links" class="hidden lg:flex items-center space-x-4">
+                    <div id="header-profile" class="flex items-center">
+                        <img id="header-user-photo" src="https://placehold.co/40x40" alt="User profile photo" class="rounded-full w-8 h-8 mr-2">
+                        <span id="user-email-display"></span>
+                        <span id="nav-user-badge" class="ml-2 role-badge">Guest</span>
+                    </div>
+                    <button id="logout-btn" class="btn bg-red-600 hover:bg-red-700">Logout</button>
+                </div>
+                
+                <button id="hamburger-menu-btn" class="text-white lg:hidden">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    
     <main class="container flex-grow flex items-center justify-center">
         <div class="w-full max-w-md bg-gray-800 p-8 rounded-xl shadow-lg">
             <h1 class="text-3xl font-bold text-center mb-6">Welcome to QC Sweepstakes</h1>
@@ -75,5 +116,6 @@
     <footer class="text-center text-gray-500 p-4 mt-8">
         &copy; 2024 QC Sweepstakes. All rights reserved. | <a href="#" class="hover:underline">Terms</a> | <a href="#" class="hover:underline">Privacy</a> | <a href="#" class="hover:underline">Contact</a>
     </footer>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
