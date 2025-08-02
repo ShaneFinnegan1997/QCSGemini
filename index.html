@@ -1,124 +1,228 @@
-<!-- qc-sweepstakes-sketch/index.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QC Sweepstakes - Login</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Sweepstakes & Prize Draws</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-900 text-white min-h-screen flex flex-col">
+<body class="bg-gray-100 text-gray-900 flex flex-col min-h-screen">
     
-    <header class="bg-gray-800 text-white p-4">
-        <!-- Global Announcement Banner -->
-        <div id="announcement-banner" class="bg-yellow-500 text-gray-900 text-center text-sm p-2 rounded-lg mb-4 flex items-center justify-center">
-            <span>✨ Welcome to the QC Sweepstakes beta!</span>
-            <button id="close-banner-btn" class="ml-auto text-gray-900 font-bold">&times;</button>
+    <!-- AdBlock Modal -->
+    <div id="adblock-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full text-center">
+            <h3 class="text-2xl font-bold mb-4">Ad Blocker Detected</h3>
+            <p class="text-gray-600 mb-6">Our site is supported by non-intrusive ads. Please consider disabling your ad blocker to help us keep this service free.</p>
+            <button onclick="hideModal('adblock-modal')" class="bg-blue-500 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-600 transition">Continue to site</button>
         </div>
-        <div class="header-container flex items-center justify-between">
-            <a href="index.html" class="logo text-2xl font-bold">QC Sweepstakes</a>
-            <nav class="flex-grow flex justify-center hidden lg:flex">
-                <ul id="nav-links" class="flex space-x-4">
-                    <li><a href="dashboard.html" class="hover:text-blue-400 transition-colors">Dashboard</a></li>
-                    <li><a href="sweepstakes.html" class="hover:text-blue-400 transition-colors">Sweepstakes</a></li>
-                    <li><a href="vip.html" class="hover:text-blue-400 transition-colors">VIP</a></li>
-                    <li><a href="chat.html" class="hover:text-blue-400 transition-colors">Chat</a></li>
-                    <li id="nav-host-link" style="display: none;"><a href="#" class="hover:text-blue-400 transition-colors">Host Tools</a></li>
-                    <li id="nav-admin-link" style="display: none;"><a href="admin.html" class="hover:text-blue-400 transition-colors">Admin</a></li>
-                </ul>
+    </div>
+    
+    <!-- Onboarding Modal -->
+    <div id="onboarding-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full text-center">
+            <h3 class="text-2xl font-bold mb-4">Welcome to our community!</h3>
+            <p class="text-gray-600 mb-6">We're excited to have you. You can now explore sweepstakes, enter to win prizes, and participate in our community chat. Start by updating your profile on the dashboard!</p>
+            <button onclick="hideModal('onboarding-modal')" class="bg-blue-500 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-600 transition">Get Started</button>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="bg-white shadow-md sticky top-0 z-40">
+        <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-2">
+                <span class="text-3xl text-blue-600"><i class="fas fa-gem"></i></span>
+                <span class="text-2xl font-bold text-gray-800">SwiftPrizes</span>
+            </a>
+            
+            <!-- Hamburger Menu for Mobile -->
+            <button id="hamburger-menu-btn" class="text-gray-500 hover:text-gray-700 focus:outline-none lg:hidden">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            
+            <!-- Navigation Links -->
+            <nav id="nav-links" class="hidden lg:flex flex-grow items-center justify-center space-x-6">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="sweepstakes.html" class="nav-link">Sweepstakes</a>
+                <a href="vip.html" class="nav-link">VIP</a>
+                <a href="chat.html" class="nav-link">Chat</a>
+                <a href="admin.html" id="nav-admin-link" class="nav-link hidden">Admin</a>
+                <a href="host.html" id="nav-host-link" class="nav-link hidden">Host Panel</a>
             </nav>
-            <div class="flex items-center space-x-4">
-                <div class="flex items-center hidden lg:flex">
-                    <button id="dark-mode-toggle" class="p-2 rounded-full hover:bg-gray-700 transition-colors">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.593A7.962 7.962 0 0110 18a8 8 0 01-7.293-4.407A8 8 0 0010 17.999 8 8 0 0017.293 13.593z"></path></svg>
+            
+            <!-- Auth & User Profile Links -->
+            <div id="auth-links" class="hidden lg:flex items-center space-x-4">
+                <!-- Links for logged-out users -->
+                <div id="auth-nav-links" class="flex items-center space-x-4">
+                    <button class="nav-link font-bold text-blue-600" onclick="showModal('auth-modal')">Log In</button>
+                    <button class="btn btn-secondary" onclick="showModal('auth-modal')">Sign Up</button>
+                </div>
+                <!-- Links for logged-in users -->
+                <div id="user-nav-links" class="hidden items-center space-x-4">
+                    <button id="dark-mode-toggle" class="text-gray-500 hover:text-gray-700 transition">
+                        <i class="fas fa-moon"></i>
                     </button>
-                </div>
-                <div id="auth-nav-links" class="hidden lg:flex space-x-4">
-                    <a href="index.html" class="btn bg-blue-600 hover:bg-blue-700">Login / Signup</a>
-                </div>
-                <div id="user-nav-links" class="hidden lg:flex items-center space-x-4">
-                    <div id="header-profile" class="flex items-center">
-                        <img id="header-user-photo" src="https://placehold.co/40x40" alt="User profile photo" class="rounded-full w-8 h-8 mr-2">
-                        <span id="user-email-display"></span>
-                        <span id="nav-user-badge" class="ml-2 role-badge">Guest</span>
+                    <div id="header-profile" class="hidden items-center space-x-2 cursor-pointer">
+                        <img src="https://placehold.co/40x40" alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-blue-500">
+                        <span class="font-semibold text-gray-700" id="user-display-name">Guest</span>
+                        <span id="nav-user-badge" class="role-badge guest">Guest</span>
                     </div>
-                    <button id="logout-btn" class="btn bg-red-600 hover:bg-red-700">Logout</button>
+                    <button id="logout-btn" class="btn btn-secondary">Log Out</button>
                 </div>
-                
-                <button id="hamburger-menu-btn" class="text-white lg:hidden">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                </button>
             </div>
+        </div>
+        
+        <!-- Announcement Banner -->
+        <div id="announcement-banner" class="bg-blue-600 text-white text-center py-2 relative">
+            <div class="container mx-auto px-6">
+                <p class="font-medium text-sm">Join our new VIP program and get exclusive entries! <a href="#" class="font-bold underline">Learn More</a></p>
+            </div>
+            <button id="close-banner-btn" class="absolute top-1/2 right-4 -translate-y-1/2 text-white opacity-75 hover:opacity-100 transition">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
     </header>
-    
-    <main class="container flex-grow flex items-center justify-center">
-        <div class="w-full max-w-md bg-gray-800 p-8 rounded-xl shadow-lg">
-            <h1 class="text-3xl font-bold text-center mb-6">Welcome to QC Sweepstakes</h1>
-            <div id="auth-forms">
-                <!-- Login Form -->
-                <form id="login-form">
-                    <div class="mb-4">
-                        <input type="email" name="email" id="login-email" placeholder="Email" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                    </div>
-                    <div class="mb-4">
-                        <input type="password" name="password" id="login-password" placeholder="Password" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                    </div>
-                    <div id="login-error" class="text-red-400 text-sm mb-4" style="display: none;"></div>
-                    <button type="submit" class="w-full p-3 rounded-lg bg-blue-600 hover:bg-blue-700 font-semibold transition-colors duration-200">Log In</button>
-                </form>
 
-                <div class="mt-4 text-center text-sm text-gray-400">
-                    Don't have an account? <a href="#" id="show-signup" class="text-blue-400 hover:underline">Sign up</a>
-                </div>
-                <div class="flex items-center justify-center my-6">
-                    <div class="border-t border-gray-600 flex-grow"></div>
-                    <span class="mx-4 text-gray-500">or</span>
-                    <div class="border-t border-gray-600 flex-grow"></div>
-                </div>
-                <button id="google-login-btn" class="w-full p-3 rounded-lg bg-gray-700 hover:bg-gray-600 font-semibold transition-colors duration-200 flex items-center justify-center">
-                    <svg class="w-5 h-5 mr-2" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">...</svg>
-                    Sign in with Google
+    <!-- Main Content -->
+    <main class="container mx-auto flex-grow p-6 flex flex-col items-center justify-center">
+        <div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
+            <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md relative">
+                <button onclick="hideModal('auth-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition">
+                    <i class="fas fa-times text-xl"></i>
                 </button>
-            </div>
-            
-            <div id="signup-form-container" class="mt-8" style="display: none;">
-                 <!-- Signup Form -->
-                <form id="signup-form">
-                    <div class="mb-4">
-                        <input type="email" name="email" id="signup-email" placeholder="Email" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                
+                <div id="auth-forms">
+                    <h2 class="text-3xl font-bold text-center mb-6">Log In</h2>
+                    <form id="login-form">
+                        <div class="mb-4">
+                            <label for="login-email" class="block text-gray-700 font-bold mb-2">Email</label>
+                            <input type="email" id="login-email" name="email" class="form-input" placeholder="you@example.com" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="login-password" class="block text-gray-700 font-bold mb-2">Password</label>
+                            <input type="password" id="login-password" name="password" class="form-input" placeholder="••••••••" required>
+                        </div>
+                        <p id="login-error" class="message error hidden mb-4"></p>
+                        <button type="submit" class="btn btn-primary w-full">Log In</button>
+                    </form>
+                    
+                    <div class="mt-6 text-center text-gray-600">
+                        <p>Don't have an account? <a href="#" id="show-signup" class="text-blue-600 font-bold hover:underline">Sign Up</a></p>
                     </div>
-                    <div class="mb-4">
-                        <input type="password" name="password" id="signup-password" placeholder="Password" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    
+                    <div class="mt-6 text-center">
+                        <div class="relative flex items-center justify-center my-6">
+                            <div class="flex-grow border-t border-gray-300"></div>
+                            <span class="flex-shrink mx-4 text-gray-500">or</span>
+                            <div class="flex-grow border-t border-gray-300"></div>
+                        </div>
+                        <button id="google-login-btn" class="btn btn-google w-full flex items-center justify-center">
+                            <i class="fab fa-google mr-2"></i> Sign in with Google
+                        </button>
                     </div>
-                    <div id="signup-error" class="text-red-400 text-sm mb-4" style="display: none;"></div>
-                    <button type="submit" class="w-full p-3 rounded-lg bg-green-600 hover:bg-green-700 font-semibold transition-colors duration-200">Sign Up</button>
-                </form>
-                <div class="mt-4 text-center text-sm text-gray-400">
-                    Already have an account? <a href="#" id="show-login" class="text-blue-400 hover:underline">Log in</a>
+                </div>
+
+                <div id="signup-form-container" class="hidden">
+                    <h2 class="text-3xl font-bold text-center mb-6">Sign Up</h2>
+                    <form id="signup-form">
+                        <div class="mb-4">
+                            <label for="signup-email" class="block text-gray-700 font-bold mb-2">Email</label>
+                            <input type="email" id="signup-email" name="email" class="form-input" placeholder="you@example.com" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="signup-password" class="block text-gray-700 font-bold mb-2">Password</label>
+                            <input type="password" id="signup-password" name="password" class="form-input" placeholder="••••••••" required>
+                        </div>
+                        <p id="signup-error" class="message error hidden mb-4"></p>
+                        <button type="submit" class="btn btn-primary w-full">Create Account</button>
+                    </form>
+                    <div class="mt-6 text-center text-gray-600">
+                        <p>Already have an account? <a href="#" id="show-login" class="text-blue-600 font-bold hover:underline">Log In</a></p>
+                    </div>
                 </div>
             </div>
         </div>
-
-    <!-- AdSense Top Banner -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-xxxxxxxxxxxxxx" crossorigin="anonymous"></script>
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-xxxxxxxxxxxxxx"
-         data-ad-slot="xxxxxxxxxx"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-
-        
     </main>
-    <footer class="text-center text-gray-500 p-4 mt-8">
-        &copy; 2024 QC Sweepstakes. All rights reserved. | <a href="#" class="hover:underline">Terms</a> | <a href="#" class="hover:underline">Privacy</a> | <a href="#" class="hover:underline">Contact</a>
+
+    <!-- Global Footer -->
+    <footer class="bg-gray-800 text-gray-300 py-6">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 SwiftPrizes. All rights reserved.</p>
+        </div>
     </footer>
+    
+    <!-- Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .nav-link { @apply text-gray-600 hover:text-blue-600 transition; }
+        .btn { @apply font-bold py-2 px-4 rounded-full transition; }
+        .btn-primary { @apply bg-blue-600 text-white hover:bg-blue-700; }
+        .btn-secondary { @apply bg-white text-gray-800 border border-gray-300 hover:bg-gray-100; }
+        .btn-google { @apply bg-red-500 text-white hover:bg-red-600; }
+        .form-input { @apply w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition; }
+        .role-badge { @apply text-xs font-bold uppercase py-1 px-2 rounded-full; }
+        .role-badge.guest { @apply bg-gray-400 text-white; }
+        .role-badge.user { @apply bg-blue-500 text-white; }
+        .role-badge.community_host { @apply bg-green-500 text-white; }
+        .role-badge.official_host { @apply bg-yellow-500 text-white; }
+        .role-badge.admin { @apply bg-red-500 text-white; }
+        .role-badge.owner { @apply bg-purple-500 text-white; }
+        .message.error { @apply bg-red-100 text-red-700 p-2 rounded; }
+        
+        .hamburger-menu-btn.open .fa-bars { display: none; }
+        .hamburger-menu-btn .fa-times { display: none; }
+        .hamburger-menu-btn.open .fa-times { display: block; }
+        
+        #nav-links.active, #auth-links.active {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            padding: 1rem 0;
+            border-top: 1px solid #e2e8f0;
+            z-index: 30;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+        body.dark-mode .bg-white { background-color: #2d3748; }
+        body.dark-mode .text-gray-900 { color: #e2e8f0; }
+        body.dark-mode .text-gray-800 { color: #f7fafc; }
+        body.dark-mode .text-gray-700 { color: #cbd5e0; }
+        body.dark-mode .text-gray-600 { color: #a0aec0; }
+        body.dark-mode .bg-gray-100 { background-color: #2d3748; }
+        body.dark-mode header { background-color: #2d3748; }
+        body.dark-mode footer { background-color: #1a202c; }
+        body.dark-mode .nav-link { color: #cbd5e0; }
+        body.dark-mode .shadow-md { box-shadow: none; }
+        body.dark-mode .bg-white.p-8.rounded-lg.shadow-lg { background-color: #1a202c; }
+        body.dark-mode .bg-white.p-8.rounded-lg.shadow-xl { background-color: #1a202c; }
+        body.dark-mode .form-input { 
+            background-color: #4a5568; 
+            border-color: #4a5568; 
+            color: #f7fafc;
+        }
+        body.dark-mode #dark-mode-toggle { color: #cbd5e0; }
+
+        /* Mobile specific styles */
+        @media (max-width: 1023px) {
+            #nav-links, #auth-links { display: none; }
+            #auth-links { margin-top: 1rem; }
+            #nav-links a, #auth-links button { padding: 0.5rem 1rem; text-align: center; }
+            .hamburger-menu-btn .fa-times { display: none; }
+            .hamburger-menu-btn.open .fa-bars { display: none; }
+            .hamburger-menu-btn.open .fa-times { display: block; }
+        }
+    </style>
+    
     <script type="module" src="script.js"></script>
 </body>
 </html>
