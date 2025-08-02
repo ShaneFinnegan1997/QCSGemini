@@ -30,17 +30,25 @@ let db, auth, userId, userRole, userProfile;
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 
 /**
- * IMPORTANT: You must replace these placeholder values with your actual Firebase project configuration.
- * Find your config in the Firebase Console under "Project settings" -> "Your apps".
+ * ====================================================================================
+ * !!! IMPORTANT: FIREBASE CONFIGURATION REQUIRED !!!
+ * ====================================================================================
+ * You MUST replace these placeholder values with your actual Firebase project configuration.
+ * * 1. Go to your Firebase project in the Firebase Console.
+ * 2. Click on "Project settings" (the gear icon).
+ * 3. Under the "General" tab, scroll down to "Your apps".
+ * 4. Select the app you registered for this project (or create a new web app).
+ * 5. Copy the `firebaseConfig` object and paste it below, replacing the placeholder.
+ * ====================================================================================
  */
 const firebaseConfig = typeof __firebase_config !== 'undefined' && __firebase_config ? JSON.parse(__firebase_config) : {
-    apiKey: "AIzaSyCS0Hp45HBPD-jn3zPn25Rt-NzdCTRqu6k",
-    authDomain: "geminiversionqcs.firebaseapp.com",
-    projectId: "geminiversionqcs",
-    storageBucket: "geminiversionqcs.firebasestorage.app",
-    messagingSenderId: "49386781237",
-    appId: "1:49386781237:web:5ced1a9238de84f54ecf7c",
-    measurementId: "G-M2NWL4Y1C5" // Optional
+  apiKey: "AIzaSyCS0Hp45HBPD-jn3zPn25Rt-NzdCTRqu6k",
+  authDomain: "geminiversionqcs.firebaseapp.com",
+  projectId: "geminiversionqcs",
+  storageBucket: "geminiversionqcs.firebasestorage.app",
+  messagingSenderId: "49386781237",
+  appId: "1:49386781237:web:5ced1a9238de84f54ecf7c",
+  measurementId: "G-M2NWL4Y1C5"
 };
 const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : '';
 const googleProvider = new GoogleAuthProvider();
