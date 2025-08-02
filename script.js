@@ -45,12 +45,13 @@ const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
  * ====================================================================================
  */
 const firebaseConfig = typeof __firebase_config !== 'undefined' && __firebase_config ? JSON.parse(__firebase_config) : {
-    apiKey: "your-api-key", // <-- REPLACE THIS WITH YOUR API KEY
-    authDomain: "your-project-id.firebaseapp.com", // <-- REPLACE THIS WITH YOUR AUTH DOMAIN
-    projectId: "your-project-id", // <-- REPLACE THIS WITH YOUR PROJECT ID
-    storageBucket: "your-project-id.appspot.com", // <-- REPLACE THIS WITH YOUR STORAGE BUCKET
-    messagingSenderId: "your-sender-id", // <-- REPLACE THIS WITH YOUR SENDER ID
-    appId: "your-app-id" // <-- REPLACE THIS WITH YOUR APP ID
+    apiKey: "AIzaSyCS0Hp45HBPD-jn3zPn25Rt-NzdCTRqu6k",
+  authDomain: "geminiversionqcs.firebaseapp.com",
+  projectId: "geminiversionqcs",
+  storageBucket: "geminiversionqcs.firebasestorage.app",
+  messagingSenderId: "49386781237",
+  appId: "1:49386781237:web:5ced1a9238de84f54ecf7c",
+  measurementId: "G-M2NWL4Y1C5"
 };
 const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : '';
 const googleProvider = new GoogleAuthProvider();
