@@ -1,228 +1,151 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sweepstakes & Prize Draws</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body class="bg-gray-100 text-gray-900 flex flex-col min-h-screen">
-    
-    <!-- AdBlock Modal -->
-    <div id="adblock-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4">
-        <div class="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full text-center">
-            <h3 class="text-2xl font-bold mb-4">Ad Blocker Detected</h3>
-            <p class="text-gray-600 mb-6">Our site is supported by non-intrusive ads. Please consider disabling your ad blocker to help us keep this service free.</p>
-            <button onclick="hideModal('adblock-modal')" class="bg-blue-500 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-600 transition">Continue to site</button>
-        </div>
-    </div>
-    
-    <!-- Onboarding Modal -->
-    <div id="onboarding-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4">
-        <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full text-center">
-            <h3 class="text-2xl font-bold mb-4">Welcome to our community!</h3>
-            <p class="text-gray-600 mb-6">We're excited to have you. You can now explore sweepstakes, enter to win prizes, and participate in our community chat. Start by updating your profile on the dashboard!</p>
-            <button onclick="hideModal('onboarding-modal')" class="bg-blue-500 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-600 transition">Get Started</button>
-        </div>
-    </div>
+Quad Cities Sweepstakes – User & Host Experience (UX) Expectations
 
-    <!-- Main Header -->
-    <header class="bg-white shadow-md sticky top-0 z-40">
-        <div class="container mx-auto px-6 py-4 flex items-center justify-between">
-            <a href="index.html" class="flex items-center space-x-2">
-                <span class="text-3xl text-blue-600"><i class="fas fa-gem"></i></span>
-                <span class="text-2xl font-bold text-gray-800">SwiftPrizes</span>
-            </a>
-            
-            <!-- Hamburger Menu for Mobile -->
-            <button id="hamburger-menu-btn" class="text-gray-500 hover:text-gray-700 focus:outline-none lg:hidden">
-                <i class="fas fa-bars text-xl"></i>
-            </button>
-            
-            <!-- Navigation Links -->
-            <nav id="nav-links" class="hidden lg:flex flex-grow items-center justify-center space-x-6">
-                <a href="dashboard.html" class="nav-link">Dashboard</a>
-                <a href="sweepstakes.html" class="nav-link">Sweepstakes</a>
-                <a href="vip.html" class="nav-link">VIP</a>
-                <a href="chat.html" class="nav-link">Chat</a>
-                <a href="admin.html" id="nav-admin-link" class="nav-link hidden">Admin</a>
-                <a href="host.html" id="nav-host-link" class="nav-link hidden">Host Panel</a>
-            </nav>
-            
-            <!-- Auth & User Profile Links -->
-            <div id="auth-links" class="hidden lg:flex items-center space-x-4">
-                <!-- Links for logged-out users -->
-                <div id="auth-nav-links" class="flex items-center space-x-4">
-                    <button class="nav-link font-bold text-blue-600" onclick="showModal('auth-modal')">Log In</button>
-                    <button class="btn btn-secondary" onclick="showModal('auth-modal')">Sign Up</button>
-                </div>
-                <!-- Links for logged-in users -->
-                <div id="user-nav-links" class="hidden items-center space-x-4">
-                    <button id="dark-mode-toggle" class="text-gray-500 hover:text-gray-700 transition">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                    <div id="header-profile" class="hidden items-center space-x-2 cursor-pointer">
-                        <img src="https://placehold.co/40x40" alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-blue-500">
-                        <span class="font-semibold text-gray-700" id="user-display-name">Guest</span>
-                        <span id="nav-user-badge" class="role-badge guest">Guest</span>
-                    </div>
-                    <button id="logout-btn" class="btn btn-secondary">Log Out</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Announcement Banner -->
-        <div id="announcement-banner" class="bg-blue-600 text-white text-center py-2 relative">
-            <div class="container mx-auto px-6">
-                <p class="font-medium text-sm">Join our new VIP program and get exclusive entries! <a href="#" class="font-bold underline">Learn More</a></p>
-            </div>
-            <button id="close-banner-btn" class="absolute top-1/2 right-4 -translate-y-1/2 text-white opacity-75 hover:opacity-100 transition">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    </header>
+=== USER EXPERIENCE ===
 
-    <!-- Main Content -->
-    <main class="container mx-auto flex-grow p-6 flex flex-col items-center justify-center">
-        <div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
-            <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md relative">
-                <button onclick="hideModal('auth-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-                
-                <div id="auth-forms">
-                    <h2 class="text-3xl font-bold text-center mb-6">Log In</h2>
-                    <form id="login-form">
-                        <div class="mb-4">
-                            <label for="login-email" class="block text-gray-700 font-bold mb-2">Email</label>
-                            <input type="email" id="login-email" name="email" class="form-input" placeholder="you@example.com" required>
-                        </div>
-                        <div class="mb-6">
-                            <label for="login-password" class="block text-gray-700 font-bold mb-2">Password</label>
-                            <input type="password" id="login-password" name="password" class="form-input" placeholder="••••••••" required>
-                        </div>
-                        <p id="login-error" class="message error hidden mb-4"></p>
-                        <button type="submit" class="btn btn-primary w-full">Log In</button>
-                    </form>
-                    
-                    <div class="mt-6 text-center text-gray-600">
-                        <p>Don't have an account? <a href="#" id="show-signup" class="text-blue-600 font-bold hover:underline">Sign Up</a></p>
-                    </div>
-                    
-                    <div class="mt-6 text-center">
-                        <div class="relative flex items-center justify-center my-6">
-                            <div class="flex-grow border-t border-gray-300"></div>
-                            <span class="flex-shrink mx-4 text-gray-500">or</span>
-                            <div class="flex-grow border-t border-gray-300"></div>
-                        </div>
-                        <button id="google-login-btn" class="btn btn-google w-full flex items-center justify-center">
-                            <i class="fab fa-google mr-2"></i> Sign in with Google
-                        </button>
-                    </div>
-                </div>
+Overall Feel:
 
-                <div id="signup-form-container" class="hidden">
-                    <h2 class="text-3xl font-bold text-center mb-6">Sign Up</h2>
-                    <form id="signup-form">
-                        <div class="mb-4">
-                            <label for="signup-email" class="block text-gray-700 font-bold mb-2">Email</label>
-                            <input type="email" id="signup-email" name="email" class="form-input" placeholder="you@example.com" required>
-                        </div>
-                        <div class="mb-6">
-                            <label for="signup-password" class="block text-gray-700 font-bold mb-2">Password</label>
-                            <input type="password" id="signup-password" name="password" class="form-input" placeholder="••••••••" required>
-                        </div>
-                        <p id="signup-error" class="message error hidden mb-4"></p>
-                        <button type="submit" class="btn btn-primary w-full">Create Account</button>
-                    </form>
-                    <div class="mt-6 text-center text-gray-600">
-                        <p>Already have an account? <a href="#" id="show-login" class="text-blue-600 font-bold hover:underline">Log In</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+Clean, modern, mobile-first responsive design.
 
-    <!-- Global Footer -->
-    <footer class="bg-gray-800 text-gray-300 py-6">
-        <div class="container mx-auto px-6 text-center">
-            <p>&copy; 2025 SwiftPrizes. All rights reserved.</p>
-        </div>
-    </footer>
-    
-    <!-- Styles -->
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .nav-link { @apply text-gray-600 hover:text-blue-600 transition; }
-        .btn { @apply font-bold py-2 px-4 rounded-full transition; }
-        .btn-primary { @apply bg-blue-600 text-white hover:bg-blue-700; }
-        .btn-secondary { @apply bg-white text-gray-800 border border-gray-300 hover:bg-gray-100; }
-        .btn-google { @apply bg-red-500 text-white hover:bg-red-600; }
-        .form-input { @apply w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition; }
-        .role-badge { @apply text-xs font-bold uppercase py-1 px-2 rounded-full; }
-        .role-badge.guest { @apply bg-gray-400 text-white; }
-        .role-badge.user { @apply bg-blue-500 text-white; }
-        .role-badge.community_host { @apply bg-green-500 text-white; }
-        .role-badge.official_host { @apply bg-yellow-500 text-white; }
-        .role-badge.admin { @apply bg-red-500 text-white; }
-        .role-badge.owner { @apply bg-purple-500 text-white; }
-        .message.error { @apply bg-red-100 text-red-700 p-2 rounded; }
-        
-        .hamburger-menu-btn.open .fa-bars { display: none; }
-        .hamburger-menu-btn .fa-times { display: none; }
-        .hamburger-menu-btn.open .fa-times { display: block; }
-        
-        #nav-links.active, #auth-links.active {
-            display: flex;
-            flex-direction: column;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background-color: #fff;
-            padding: 1rem 0;
-            border-top: 1px solid #e2e8f0;
-            z-index: 30;
-        }
+Simple navigation, fast load times, consistent styling across all pages.
 
-        /* Dark mode styles */
-        body.dark-mode {
-            background-color: #1a202c;
-            color: #e2e8f0;
-        }
-        body.dark-mode .bg-white { background-color: #2d3748; }
-        body.dark-mode .text-gray-900 { color: #e2e8f0; }
-        body.dark-mode .text-gray-800 { color: #f7fafc; }
-        body.dark-mode .text-gray-700 { color: #cbd5e0; }
-        body.dark-mode .text-gray-600 { color: #a0aec0; }
-        body.dark-mode .bg-gray-100 { background-color: #2d3748; }
-        body.dark-mode header { background-color: #2d3748; }
-        body.dark-mode footer { background-color: #1a202c; }
-        body.dark-mode .nav-link { color: #cbd5e0; }
-        body.dark-mode .shadow-md { box-shadow: none; }
-        body.dark-mode .bg-white.p-8.rounded-lg.shadow-lg { background-color: #1a202c; }
-        body.dark-mode .bg-white.p-8.rounded-lg.shadow-xl { background-color: #1a202c; }
-        body.dark-mode .form-input { 
-            background-color: #4a5568; 
-            border-color: #4a5568; 
-            color: #f7fafc;
-        }
-        body.dark-mode #dark-mode-toggle { color: #cbd5e0; }
+Accessibility-friendly (clear fonts, good color contrast, screen-reader compatible).
 
-        /* Mobile specific styles */
-        @media (max-width: 1023px) {
-            #nav-links, #auth-links { display: none; }
-            #auth-links { margin-top: 1rem; }
-            #nav-links a, #auth-links button { padding: 0.5rem 1rem; text-align: center; }
-            .hamburger-menu-btn .fa-times { display: none; }
-            .hamburger-menu-btn.open .fa-bars { display: none; }
-            .hamburger-menu-btn.open .fa-times { display: block; }
-        }
-    </style>
-    
-    <script type="module" src="script.js"></script>
-</body>
-</html>
+
+Navigation:
+
+Main navigation bar or menu with tabs:
+
+1. Home – Featured sweepstakes, promotions, announcements.
+
+
+2. Live Events – List of current/upcoming Facebook Live sweepstakes with host info.
+
+
+3. My Entries – Overview of all entries with entry dates, limits, and results.
+
+
+4. Wallet – View balances, deposits, withdrawals, transaction history.
+
+
+5. Profile – Edit settings, view verification status, manage subscriptions.
+
+
+
+
+Finding & Entering Sweepstakes:
+
+Home/Dashboard highlights active sweepstakes with images, titles, prize info, and countdown timers.
+
+Filters: category, VIP tier requirement, host type, live/ended, entry price.
+
+Search bar for keywords (e.g., “gift card” or “cash”).
+
+One-click “Enter” button on sweepstakes cards with real-time updates to entry count.
+
+Show remaining entry limits and time until close.
+
+
+User Dashboard:
+
+Personalized greeting with current VIP or Host status.
+
+Quick stats: number of active entries, total winnings, wallet balance.
+
+Notifications for wins, entry confirmations, and account updates.
+
+
+Profile & Account Management:
+
+Secure area for updating email, password, and payment methods.
+
+Verification status display (Unverified, Verified, Verified+).
+
+Manage subscriptions (VIP, Community Host) with upgrade/downgrade options.
+
+
+Wallet & Transactions:
+
+Clear breakdown: winnings, deposits, withdrawals, referral credits.
+
+History with sortable filters (date, type, amount).
+
+Withdraw button with built-in verification checks if over $600 threshold.
+
+
+Other UX Notes:
+
+Smooth animations/transitions, but not heavy on load time.
+
+Consistent button placement for repetitive actions (e.g., always bottom right for “Submit”).
+
+Minimal pop-ups; use slide-in panels or modals for quick info without leaving the page.
+
+
+
+---
+
+=== HOST EXPERIENCE ===
+
+Overall Feel:
+
+Streamlined, powerful tools for managing sweepstakes without confusion.
+
+Clear separation between Prize Pool Wallet and Earnings Wallet.
+
+
+Navigation (for Hosts):
+
+Host Dashboard: summary of hosted sweepstakes, prize pool status, and earnings.
+
+Create Sweepstakes: step-by-step form for creating a sweepstakes with fields for title, description, images, entry price, category, and VIP/Host restrictions.
+
+Manage Events: edit live sweepstakes, update Facebook Live video links, toggle LIVE indicator, view participant list, and close events.
+
+Prize Management: enter winner data, send for admin approval, track prize delivery status.
+
+Wallet Management: view balances, transfer earnings, request withdrawals.
+
+Host Tools: quick access to templates, scripts, or guidelines.
+
+
+Host Dashboard:
+
+Overview of upcoming, live, and past sweepstakes with status indicators.
+
+Quick stats: total entries, revenue generated, payout amounts.
+
+Notifications for pending admin approvals, payout releases, and participant questions.
+
+
+Community Host Tiers:
+
+Display of current tier (Tier 1, Tier 2, Elite) and benefits.
+
+Upgrade button with price display and payment options.
+
+
+Event Creation UX:
+
+Guided setup with validation (no missing fields).
+
+Live preview of sweepstakes card as details are entered.
+
+Ability to save as draft before publishing.
+
+
+Wallet & Transactions (Hosts):
+
+Prize Pool Wallet: funds from each sweepstakes before distribution.
+
+Earnings Wallet: host’s share of profits after distribution.
+
+Transaction history with filters for type/date/amount.
+
+
+Other Host UX Notes:
+
+Quick-copy event links for promotion.
+
+Embedded tutorial videos in dashboard for first-time hosts.
+
+Admin messaging panel for quick communication.
