@@ -1,151 +1,942 @@
-Quad Cities Sweepstakes – User & Host Experience (UX) Expectations
+!!MAX AI SUMMARY!!
 
-=== USER EXPERIENCE ===
+The Quad Cities Sweepstakes website is a PHP-based platform designed to host sweepstakes, manage user accounts, and handle VIP subscriptions. It allows users to participate in sweepstakes for a chance to win prizes, offering both official and community-run events. The site incorporates user authentication, role-based access control, and a virtual currency system using Sweeps Coins (SC) and tickets.
 
-Overall Feel:
+### Core Functionality & Features
 
-Clean, modern, mobile-first responsive design.
+*   **User Accounts:** Users can register, log in, and manage their profiles, including updating email and password. Password security is maintained through hashing. Unverified members have limited access to sweepstakes.
+*   **Sweepstakes:** The platform displays sweepstakes categorized as "Live", "Upcoming", or "Past".  Sweepstakes access can be restricted based on user roles.
+*   **VIP Subscriptions:** Users can subscribe to different VIP tiers (Basic, Plus, Elite) for perks such as bonus Sweeps Coins, exclusive sweepstakes, and priority support.
+*   **Virtual Currency:** The site uses Sweeps Coins (SC), which can be purchased, and Free Tickets and CH Tickets, earned through daily bonuses and community participation.
+*   **Admin/Moderation:** Administrative panels are available for managing users and sweepstakes.
 
-Simple navigation, fast load times, consistent styling across all pages.
+### Page Breakdown
 
-Accessibility-friendly (clear fonts, good color contrast, screen-reader compatible).
+*   **`index.php`:** The homepage provides an overview of the sweepstakes and a call to action for registration.
+*   **`login.php`:** Handles user login and authentication. It retrieves the password hash from the database and verifies user credentials.
+*   **`register.php`:** Manages user registration, including input validation, password hashing, and IP address registration limiting. Upon successful registration, wallet and ticket entries are created for the new user.
+*   **`dashboard.php`:** The main page for logged-in users displays account balances, live sweepstakes, and a live chat.
+*   **`account.php`:** Allows users to manage their account details, change passwords, and update their email addresses. It also handles password and email change requests with proper validation and database updates.
+*   **`OfficialSweeps.php`:** Displays official sweepstakes for verified members and staff.
+*   **`CommunitySweeps.php`:** Displays community sweepstakes.
+*   **`vip.php`:** Provides information about VIP tiers and benefits, including interactive popups.
+*   **`vip_panel.php`:** Allows VIP members to manage their subscriptions, claim bonuses, and view their VIP status.
+*   **`purchase_coins.php`:** Enables users to purchase Sweeps Coins, displaying different purchase packages.
+*   **`get_tickets.php`:** Allows users to claim daily free tickets and learn about earning CH Tickets.
+*   **`logout.php`:** Logs out the user by clearing and destroying the session.
+*   **`payment_settings.php`:** A placeholder page for managing payment methods and billing information.
+*   **`favicon_config.php`:** Manages the site's favicon.
 
+### Staff/Admin Pages
 
-Navigation:
+*   **`staff/login.php`:** Handles login for staff members (admin, mod, owner) and redirects them to their respective panels.
+*   **`staff/admin.php`:** Admin panel for managing sweepstakes and users.
+*   **`staff/mod.php`:** Moderator panel for managing users.
+*   **`staff/owner.php`:** Owner panel with full administrative and staff management features.
+*   **`staff/logout.php`:** Logs out staff members, clearing the session and redirecting to the staff login page.
 
-Main navigation bar or menu with tabs:
+### Code & Design
 
-1. Home – Featured sweepstakes, promotions, announcements.
+*   **Languages:** PHP is used for backend logic and dynamic content generation. HTML, CSS, and JavaScript are used for the frontend.
+*   **Database:** MySQL is used for storing user data, sweepstakes information, and other persistent data.
+*   **Styling:** CSS files (`guest.css`, `members.css`, `admin.css`, `header.css`, `style.css`) provide styling, and Font Awesome is used for icons.
+*   **Security:** Prepared statements are used to prevent SQL injection, and password hashing protects user passwords.
 
+### Additional Notes
 
-2. Live Events – List of current/upcoming Facebook Live sweepstakes with host info.
+*   The website uses a consistent header (`header.php`) and potentially a footer (`footer.php`) for a unified look and feel.
+*   Role-based access control is implemented to restrict access to certain pages and features based on user roles (e.g., admin, mod, user).
+*   The design incorporates responsive elements for optimal viewing on various devices.
+*   The site includes message boxes for displaying success, error, and warning messages to the user.
+*   A custom dropdown component is used in the header to display a comparison chart between unverified and verified members.
 
+This description covers the website's structure, functionality, and technical implementation based on the provided code snippets.
 
-3. My Entries – Overview of all entries with entry dates, limits, and results.
+!!GEMINI SUMMARY!!
 
+​QC Sweepstakes: The Complete Architectural & Functional Blueprint
+​Document Version: 1.0
+Date: August 13, 2025
+​Part 1: High-Level Overview & Mission Statement
+​What is QC Sweepstakes?
+​QC Sweepstakes is a community-centric, legal sweepstakes platform designed specifically for the Quad Cities area and beyond. Its core mission is to blend the thrill of cash and prize giveaways with deep social engagement, creating a fun, safe, and interactive online destination. It is built on a foundation of legal compliance with U.S. sweepstakes laws (specifically for Iowa and Illinois), robust security, and a multi-layered economy that rewards participation and loyalty at every level. It is more than a giveaway site; it is a community hub.
+​Part 2: Core Architecture & Technology Stack
+​The platform is engineered using a modern, scalable, and secure technology stack chosen for performance and reliability.
+• ​Frontend Framework: React (with Next.js) 
+• ​Why & How: Next.js provides Server-Side Rendering (SSR) for fast initial page loads and excellent SEO. The user interface is built as a series of reusable React components (e.g., <ChatWindow>, <SweepstakesCard>, <AdminPanel>), which manage their own state and interact with the backend via API calls. This component-based architecture makes the site fast, maintainable, and easy to update.
+• ​Backend Framework: Node.js (with NestJS) 
+• ​Why & How: NestJS provides a highly organized, scalable structure for the backend server. All business logic—user authentication, payment processing, database interactions, sweepstakes mechanics—is handled here. The code is organized into modules (e.g., UsersModule, PaymentsModule, ChatModule) with clear separation of concerns.
+• ​Database: PostgreSQL 
+• ​Why & How: PostgreSQL is chosen for its data integrity, reliability, and ability to handle complex queries. The database schema is meticulously designed to store all platform data, including user profiles, transactions, chat messages, sweepstakes entries, and staff audit logs. All sensitive data (like encrypted SSNs) is stored here.
+• ​Real-time Communication: Socket.IO 
+• ​Why & How: This library powers all real-time features. The backend runs a Socket.IO server that opens a persistent connection with each active user. This is used for the live chat system, real-time notifications (e.g., "You've won a prize!"), and instant updates to the Site-Wide Progressive Jackpot display.
+• ​Payment & Identity APIs: Stripe 
+• ​Why & How: Stripe's robust APIs are used for two critical functions: 
+• ​Stripe Payments: To securely process all transactions, including VIP/CH subscriptions and Sweeps Coin package purchases.
+• ​Stripe Identity: To provide secure, automated government-issued ID verification for the Verified+ member tier and for winners crossing the $600 threshold.
+• ​Tax Compliance API: IRS TIN Matching Service 
+• ​Why & How: The backend makes secure, server-to-server calls to this API to verify that a user's submitted name and SSN match IRS records, a crucial step in the Verified+ process.
+​Part 3: The User Experience & The "Pyramid of Trust"
+​The user's journey is defined by their level of verification, which unlocks progressively more features.
+• ​Page: Registration (/register) 
+• ​Consists Of: A simple form requiring a username, email, and password. Includes a checkbox to agree to the Terms of Service and Privacy Policy.
+• ​Code Logic: Upon submission, the backend validates the data (ensuring the username/email are unique), hashes the password using a strong algorithm (e.g., bcrypt), and creates a new record in the users table with the default role of Unverified Member.
+• ​Member Role 1: Unverified Member 
+• ​Permissions: Can browse the site, watch streams (view-only), and earn/use Free Sweeps Coins.
+• ​Restrictions (Code): A middleware on the backend checks the user's role. If they are Unverified, API calls to enter paid sweepstakes or use advanced chat features will be rejected with a 403 Forbidden status. The frontend UI will hide or disable corresponding buttons.
+• ​Member Role 2: Verified Member 
+• ​How to Achieve (Page: /account/verify): A simple page with a "Connect with Facebook" button.
+• ​Code Logic: Utilizes the Facebook OAuth API. The backend verifies that the name on the Facebook profile matches the registered name. If successful, the role in the users database table is updated to Verified Member.
+• ​Permissions: Unlocks standard chat emojis, friend/mailbox system, the Weekend Wheel, and better daily bonuses.
+• ​Member Role 3: Verified+ Member 
+• ​How to Achieve (Page: /account/become-verified-plus): A multi-step, secure process.
+• ​Code Logic: 
+• ​User pays the verification fee via a Stripe Checkout session.
+• ​Upon successful payment, the backend generates a one-time token for Stripe Identity.
+• ​The frontend initializes the Stripe Identity flow, where the user submits their ID.
+• ​Once Stripe confirms the ID, the user is directed to our secure, encrypted form to submit their SSN.
+• ​The backend calls the IRS TIN Matching API. If successful, the role in the users table is updated to Verified+ Member.
+• ​Permissions: Unlocks all Tier 1 VIP benefits (except the vault) and the ability to withdraw winnings over $600.
+​Part 4: The Platform Economy & Gamification
+• ​Page: Sweeps Coin Store (/store) 
+• ​Consists Of: A visually appealing grid of SC packages with clear pricing and bonus ticket information. Each package shows the final price, including the Stripe processing fee.
+• ​Code Logic: Clicking "Purchase" initiates a Stripe Checkout session. A webhook from Stripe notifies our backend of a successful purchase, and the sweeps_coins column for that user in the database is updated accordingly.
+• ​Page: Free Sweeps Coins Zone (/free-play) 
+• ​Consists Of: A section displaying a short video ad, followed by a selection of interactive modules (Trivia, Puzzles, Polls).
+• ​Code Logic: The ad is a simple video embed you can change from the admin panel. Each module is a React component that, upon successful completion, makes an API call to the backend to add a small, specified amount of SC to the user's free_sweeps_coins balance.
+• ​System: The Loyalty Vault (Fee Reimbursement) 
+• ​Consists Of: A display on the user dashboard showing their locked vault balance.
+• ​Code Logic: After any purchase, a backend function calculates the fee paid. It checks the user's VIP tier and adds the appropriate reimbursement amount to a loyalty_vault_balance column in the database, respecting the monthly caps. A separate cron job or trigger checks for subscription renewals and, upon success, transfers the vault balance to the user's main cash balance.
+• ​System: Wheels & Bonuses 
+• ​Consists Of: The "Weekend Wheel" and "Login Streak Wheel" are interactive React components that appear on the dashboard conditionally.
+• ​Code Logic: The backend provides the prize list and probabilities, which are editable in the admin panel. When a user spins, the frontend plays an animation while the backend securely determines the prize. The prize is then added to the user's account and enters a staff approval queue.
+​Part 5: The Creator Ecosystem (Community Hosts)
+• ​Page: CH Dashboard (/host/dashboard) 
+• ​Consists Of: A dedicated panel for Community Hosts with tools tiered by their CH level. Includes sections for creating/managing events, the free-entry task builder, and viewing wallet balances.
+• ​Code Logic: This page is protected by a route guard that checks if the user's role is Community Event Host. The specific tools displayed are determined by a ch_tier property on their user object.
+• ​System: The Dual-Wallet 
+• ​Code Logic: The database users table has columns for cash_balance, live_wallet_balance, and payout_wallet_balance. When a CH event starts, funds are transferred to the live_wallet_balance. When it ends, a backend function automatically calculates the tiered distribution, sending funds to the winner, the nonprofit, the site, and the host's payout_wallet_balance.
+​Part 6: The Staff & Owner Control Panels
+​This is the administrative backbone of the site, a secure area with tiered access.
+• ​Page: Staff Login (/staff/login) 
+• ​Consists Of: A separate, secure login form for staff members.
+• ​Code Logic: Authenticates against a separate staff table in the database.
+• ​Panel: Moderator (/staff/moderator) 
+• ​Consists Of: A clean interface with queues for: 
+• ​Reported Chat Messages
+• ​Pending Media/Badge Approvals
+• ​Viewing basic user activity logs.
+• ​Code Logic: API endpoints for this panel are protected by a guard requiring a Moderator role or higher.
+• ​Panel: Admin (/staff/admin) 
+• ​Consists Of: All Mod tools, plus: 
+• ​Full User Management (lock/edit accounts, view detailed logs).
+• ​Prize & Bonus Management (approve wheel wins, set prize values).
+• ​CH Event Management (approve events, monitor transactions).
+• ​Financial Overview (view revenue, fees, and held vault funds).
+• ​Code Logic: Protected by a guard requiring an Admin role or higher.
+• ​Panel: Owner (/staff/owner) 
+• ​Consists Of: All Admin tools, plus exclusive master controls: 
+• ​Tax Compliance Center: The dashboard to view users over the $600 threshold and generate 1099s.
+• ​Role Permission Manager: A UI to assign specific capabilities to Admin/Mod roles.
+• ​Economic Controls: Forms to edit site-wide numbers like CH fees and vault percentages.
+• ​Theme & Content Editor: A simplified interface to change the site's CSS theme and edit text on key pages.
+• ​Code Logic: The highest level of protection, requiring an Owner role. These endpoints are the most restricted in the entire backend.
 
-4. Wallet – View balances, deposits, withdrawals, transaction history.
+!!CHATGPT SUMMARY!!
 
+0) One-liner & Goals
 
-5. Profile – Edit settings, view verification status, manage subscriptions.
-
-
-
-
-Finding & Entering Sweepstakes:
-
-Home/Dashboard highlights active sweepstakes with images, titles, prize info, and countdown timers.
-
-Filters: category, VIP tier requirement, host type, live/ended, entry price.
-
-Search bar for keywords (e.g., “gift card” or “cash”).
-
-One-click “Enter” button on sweepstakes cards with real-time updates to entry count.
-
-Show remaining entry limits and time until close.
-
-
-User Dashboard:
-
-Personalized greeting with current VIP or Host status.
-
-Quick stats: number of active entries, total winnings, wallet balance.
-
-Notifications for wins, entry confirmations, and account updates.
-
-
-Profile & Account Management:
-
-Secure area for updating email, password, and payment methods.
-
-Verification status display (Unverified, Verified, Verified+).
-
-Manage subscriptions (VIP, Community Host) with upgrade/downgrade options.
-
-
-Wallet & Transactions:
-
-Clear breakdown: winnings, deposits, withdrawals, referral credits.
-
-History with sortable filters (date, type, amount).
-
-Withdraw button with built-in verification checks if over $600 threshold.
-
-
-Other UX Notes:
-
-Smooth animations/transitions, but not heavy on load time.
-
-Consistent button placement for repetitive actions (e.g., always bottom right for “Submit”).
-
-Minimal pop-ups; use slide-in panels or modals for quick info without leaving the page.
-
-
+QC Sweepstakes is a role-based sweepstakes platform with tiered memberships and hosts, tamper-evident auditing, real-time owner oversight, configurable prize distribution, Stripe payments, and automatic IRS compliance (warning/lock, identity, TIN match). Core stack: PHP 8 + MySQL (business logic), Node.js + Socket.IO (real-time), React (interactive UI), Web Push + Email (alerts). No SMS at launch.
 
 ---
 
-=== HOST EXPERIENCE ===
+1) Roles, Permissions, and Tracking (the source of truth)
 
-Overall Feel:
+Role hierarchy
 
-Streamlined, powerful tools for managing sweepstakes without confusion.
+Owner (top): everything an Admin can do plus legal/critical configuration and live tracking of everyone. Admins cannot see Owner activity.
 
-Clear separation between Prize Pool Wallet and Earnings Wallet.
+Admin: site management (no legal/critical edits without Owner approval); can track Mods, CH tiers, VIP tiers, Verified+, Verified, Unverified.
 
+Mod: content/event moderation within member scopes; can track Unverified, Verified, Verified+ only.
 
-Navigation (for Hosts):
+Community Hosts (CH): host events within tier limits; no tracking powers.
 
-Host Dashboard: summary of hosted sweepstakes, prize pool status, and earnings.
+VIP tiers: member perks; no tracking powers.
 
-Create Sweepstakes: step-by-step form for creating a sweepstakes with fields for title, description, images, entry price, category, and VIP/Host restrictions.
+Verified+ (deep-verified): Assigned by Admin or Owner only after Stripe Identity and SSN/TIN verified (IRS TIN Match = pass). Grants access to high-value/privileged events. No tracking powers.
 
-Manage Events: edit live sweepstakes, update Facebook Live video links, toggle LIVE indicator, view participant list, and close events.
+Verified: passed Stripe Identity only (ID verified). Standard events, withdrawals as allowed by law. No tracking powers.
 
-Prize Management: enter winner data, send for admin approval, track prize delivery status.
+Unverified: limited participation; cannot enter higher-value events or withdraw.
 
-Wallet Management: view balances, transfer earnings, request withdrawals.
+Tracking visibility (who can see whose actions)
 
-Host Tools: quick access to templates, scripts, or guidelines.
+Viewer	Can track…
 
+Owner	Everyone (Admins, Mods, CH tiers, VIP tiers, Verified+, Verified, Unverified)
+Admin	Mods, CH tiers, VIP tiers, Verified+, Verified, Unverified ( not Owner )
+Mod	Unverified, Verified, Verified+
+CH/VIP/Member	No tracking features
 
-Host Dashboard:
+Approval model
 
-Overview of upcoming, live, and past sweepstakes with status indicators.
+Owner-only: legal settings (IRS thresholds, verification methods, eligibility rules), crypto keys, audit retention, payout guardrails.
 
-Quick stats: total entries, revenue generated, payout amounts.
+Admin: proposes changes to any Owner-only setting → Approval Queue → Owner approves/rejects.
 
-Notifications for pending admin approvals, payout releases, and participant questions.
+Everything that changes money, rules, roles, or legal text creates an immutable audit entry.
 
+---
 
-Community Host Tiers:
+2) What the website consists of (architecture & technologies)
 
-Display of current tier (Tier 1, Tier 2, Elite) and benefits.
+Backend & services
 
-Upgrade button with price display and payment options.
+PHP 8.x + MySQL 8: primary API, business rules, RBAC, IRS logic, wallets, payouts.
 
+Node.js 20 + Socket.IO: real-time event bus for live owner dashboard, push alerts, and live event widgets.
 
-Event Creation UX:
+Redis (optional but recommended): rate limits, Socket.IO adapters, queues.
 
-Guided setup with validation (no missing fields).
+Stripe Payments & Stripe Identity: payments & ID. We store only Stripe reference IDs, no raw ID images.
 
-Live preview of sweepstakes card as details are entered.
+IRS TIN Match: server-side integration; store pass/fail + timestamp (no raw SSN persisted beyond encrypted transient handling).
 
-Ability to save as draft before publishing.
+Email: SMTP/SendGrid.
 
+Web Push: VAPID keys; browser-level push to Owner/Admin.
 
-Wallet & Transactions (Hosts):
+Frontend
 
-Prize Pool Wallet: funds from each sweepstakes before distribution.
+PHP-rendered pages + React components for interactive parts (forms, dashboards, tables, modals).
 
-Earnings Wallet: host’s share of profits after distribution.
+Service Worker for push notifications.
 
-Transaction history with filters for type/date/amount.
+Responsive: desktop & mobile layouts.
 
+High-level data flow
 
-Other Host UX Notes:
+1. User acts → PHP validates & writes DB → emits event to Node via internal channel → Node broadcasts via Socket.IO → Owner/Admin receive live updates + push/email as rules dictate.
 
-Quick-copy event links for promotion.
+2. Critical actions (payouts, thresholds, role changes) always write audit log (tamper-evident hash chain).
 
-Embedded tutorial videos in dashboard for first-time hosts.
+---
 
-Admin messaging panel for quick communication.
+3) Pages (every page & what’s on them)
+
+Public
+
+1. Home / Index (/)
+
+Hero, “How it works,” current live/featured sweepstakes cards (LIVE badges).
+
+Links: Register, Login, VIP, Hosts, Rules/Terms.
+
+2. Registration (/register)
+
+Email/password, TOS/Privacy consent, optional referral.
+
+Post-signup prompt to verify identity for higher-value events.
+
+3. Login (/login)
+
+Email/pass, optional 2FA (Owner can require it for staff).
+
+4. About/FAQ/Rules/Privacy (editable CMS pages; versioned).
+
+Member-facing (after login)
+
+5. Member Dashboard (/me)
+
+Cards: active entries, recent wins, upcoming events, wallet snapshot.
+
+Announcements & alerts (e.g., “approaching $600”).
+
+6. Profile (/me/profile)
+
+Personal info, notification preferences (email/push), leaderboard opt-out.
+
+Verification status block: Unverified / Verified / Verified+ (with next-step CTA).
+
+7. Wallet (/me/wallet)
+
+Ledger table (credits/debits), filters, export CSV, withdrawal request (gated by verification/tax rules).
+
+8. Sweepstakes List (/sweeps)
+
+Filter/sort (category, host, price, VIP-only).
+
+9. Sweepstakes Detail (/sweeps/:id)
+
+Prize, rules, entry price, live status, entries remaining, host card, payout breakdown.
+
+Enter button → Stripe checkout modal.
+
+10. Friends & DMs (/me/social)
+
+Friend requests, DM threads, unread counts, rate-limited messaging.
+
+11. VIP Panel (/vip)
+
+VIP-only sweeps, perks, renewal status, exclusive chat.
+
+12. CH Panel (/host)
+
+Host analytics, Create Event, manage live video link, toggle LIVE, script/notes, submit winners, prize pool wallet.
+
+Staff consoles
+
+13. Moderator Console (/mod)
+
+Content flags, user flags, approve/reject entries, mute/ban (role-based caps).
+
+Visibility: Unverified/Verified/Verified+ activity only.
+
+14. Admin Console (/admin)
+
+Dashboard: KPIs (entries, revenue, payouts, flags), quick actions.
+
+Users: search, roles, verification status, manual locks/unlocks.
+
+Sweepstakes: create/edit/close, draw winners, prize distribution template picker.
+
+Wallets/Payouts: inspect wallets, approve payouts, refunds.
+
+Tiers & Pricing: VIP/CH pricing & perks.
+
+Content: edit Terms/Privacy/Rules (versioned).
+
+Approvals: change requests awaiting Owner decision.
+
+Audit Logs: filter/export (Admin sees no Owner entries).
+
+15. Owner Console (/owner)
+
+Live Activity (real-time): stream of Admin/Mod actions; role & severity filters.
+
+Alerts: configure push/email triggers; suspicious action thresholds.
+
+Advanced Config (Owner-only):
+
+Legal & compliance: Warning (default 500), Lock (default 600), verification methods, strict mode.
+
+Sweepstakes eligibility: min age, geography, banned countries.
+
+Finance & payouts: default prize distribution (left blank by request), fee caps.
+
+Keys & secrets: VAPID, hash salts, Stripe keys (write-only), TIN Match config.
+
+Data retention: audit log retention (≥1 year), backup policy.
+
+Approvals: approve/reject Admin requests (legal/critical).
+
+Audit Logs (full): everything, including Admin actions; export CSV.
+
+Reports: 1099 candidates, YTD winnings, revenue breakdowns, host performance.
+
+---
+
+4) Legal & Compliance (the exact behavior)
+
+Threshold logic (calendar year)
+
+Warning at $500 YTD winnings (configurable Owner-only): email + in-site notice.
+
+Lock at $600 YTD (Owner-only configurable; optional “strict mode” to ensure you cannot set above statutory min):
+
+Blocks new entries and withdrawals.
+
+Shows banner requiring verification.
+
+Verification paths
+
+Verified = Stripe Identity passed (we store only the Stripe reference).
+
+Verified+ (deep) = Stripe Identity and SSN/TIN verified (IRS TIN Match = pass).
+
+Assigned only by Admin/Owner after deep verification status is met.
+
+Grants access to high-value/privileged events and higher payout limits if configured.
+
+Unlock sequence
+
+1. User hits lock → prompted to verify.
+
+2. Runs Stripe Identity; collects TIN securely; server performs TIN Match.
+
+3. On success → auto-unlock entries/withdrawals; audit event recorded.
+
+4. 1099 candidate marking: users ≥ $600 are listed for export.
+
+What we do not store
+
+No raw ID images.
+
+SSN/TIN not logged; handled in secured memory; only verification status & TIN result stored.
+
+---
+
+5) Money system (wallets, entries, payouts)
+
+Wallet types
+
+Member wallet (per user)
+
+CH Prize Pool (per event host & sweep)
+
+CH Earnings
+
+Website (platform revenue)
+
+Nonprofit (optional charity allocations)
+
+Key flows
+
+Entry purchase → Stripe charge → credit CH Prize Pool; log fee to Website wallet; audit.
+
+Close sweepstakes → distribution by template:
+
+Winner payout(s)
+
+Website share
+
+CH share → CH Earnings
+
+(Optional) Nonprofit share
+
+Payouts: withdrawal requests (Stripe or manual) gated by verification/tax status.
+
+Reversals/Refunds: Admin tool with mandatory reason; audit logged.
+
+(Per your request, default distribution template is blank; set in Owner → Advanced Config.)
+
+---
+
+6) Real-time, Push & Email
+
+Real-time (Node + Socket.IO)
+
+Namespaces: /owner (full), /admin (scoped).
+
+Events:
+
+activity:event (human action log: who/what/where/when/IP/device, hash ID)
+
+alert:critical (role changes, price edits, payouts, tax locks)
+
+events:live (Live feed changes)
+
+Auth: signed session token from PHP, validated with shared secret.
+
+Throttling: Redis token bucket per role & event type.
+
+Alerts
+
+Push: Owner/Admin opt-in; service worker delivers foreground/background notices.
+
+Email: transactional (thresholds, approvals, payouts, disputes).
+
+No SMS at launch (explicit).
+
+---
+
+7) Security model (what protects the system)
+
+Auth: bcrypt (cost ≥12), secure/Httponly cookies, SameSite=Strict, optional 2FA for staff.
+
+CSRF: tokens on state-changing requests.
+
+RBAC: enforced server-side for every endpoint; client cannot grant itself powers.
+
+PII: Stripe reference IDs only; SSN/TIN never logged; in-memory short-lived handling.
+
+Transport: HTTPS everywhere + HSTS; TLS1.2+ ciphers.
+
+Tamper-evident audit: each log row stores parent_hash + self_hash (SHA-256 over canonical payload), daily anchor recorded.
+
+Rate limits: login, payouts, entries, DMs; role-based caps.
+
+CSP & XSS: strict CSP; HTML escapes; WAF rules optional.
+
+Backups: nightly encrypted DB dumps; retention 7/30/90 days (configurable).
+
+---
+
+8) Data model (primary tables & purpose)
+
+(MySQL 8; keys/constraints as appropriate.)
+
+users — identity, status (unverified/verified/verified_plus/vip tiers), YTD winnings, Stripe refs.
+
+roles, user_roles — RBAC mapping (owner/admin/mod/ch_t1/ch_t2/ch_elite).
+
+permissions, role_permissions — fine-grained action codes.
+
+settings — key/value app settings with scope (owner, admin, system).
+
+wallets, wallet_transactions — ledgers for all balances (member/host/site/nonprofit).
+
+sweepstakes — event metadata, timing, host, prize wallet.
+
+entries — who entered what, when.
+
+prizes — winner record(s), amounts, state (pending/awarded/paid/held).
+
+payouts — user payouts and statuses.
+
+verifications — method (stripe/manual), status, tin_match_status.
+
+approvals — Admin change requests, Owner decisions.
+
+audit_logs — actor, role, action, target, IP, device fingerprint, metadata, hash chain.
+
+messages, friends — DMs & relationships.
+
+notifications — push/email/in-app notices.
+
+vip_tiers, ch_tiers, subscriptions — pricing/perks and active subs.
+
+live_events — sweep live status + embed.
+
+---
+
+9) Staff & member “what’s coded in” (concrete behaviors)
+
+Owner (coded abilities)
+
+CRUD everything; only user who can: change legal thresholds, enable strict mode, pick verification methods, rotate keys, decide data retention.
+
+See live stream of Admin/Mod actions; approve/reject queued changes.
+
+Export everything (audit, payouts, 1099 candidates).
+
+Admin
+
+Create/manage sweepstakes; draw winners; manage payouts; configure VIP/CH tiers.
+
+Propose legal/critical changes → Owner approval required.
+
+Track everyone except Owner; cannot see Owner audit rows.
+
+Mod
+
+Moderate chat/content/entries; cannot set prices, payouts, rules, or roles.
+
+Track Unverified/Verified/Verified+ only.
+
+CH (all tiers)
+
+Create/host events within tier limits, manage prize pool wallet, submit winners to Admin.
+
+No tracking powers.
+
+VIP / Verified+ / Verified / Unverified
+
+Verified: can enter standard events, withdraw payouts if within legal rules.
+
+Verified+: access high-value events; flagged as deep-verified.
+
+Unverified: limited participation; nudged to verify.
+
+---
+
+10) API surface (representative, not exhaustive)
+
+Auth
+
+POST /api/auth/register — create account
+
+POST /api/auth/login — session cookie
+
+POST /api/auth/logout
+
+Users & Roles
+
+GET /api/users/:id (scoped)
+
+POST /api/users/:id/role (Admin; some roles require Owner approval)
+
+POST /api/users/:id/lock (Admin/Owner)
+
+Sweepstakes
+
+GET /api/sweeps / GET /api/sweeps/:id
+
+POST /api/sweeps (Admin/Owner/CH within tier)
+
+POST /api/sweeps/:id/close (Admin/Owner)
+
+POST /api/sweeps/:id/draw (Admin/Owner)
+
+Entries & Payments
+
+POST /api/sweeps/:id/enter → Stripe checkout token → server verifies → create entry & ledger
+
+POST /api/payouts (withdrawal request; gated by verification/tax status)
+
+Verification & Tax
+
+POST /api/verify/stripe/start
+
+POST /api/verify/tin (Owner-configured; result stored as pass/fail)
+
+GET /api/verify/status
+
+Approvals & Audit
+
+GET /api/approvals (Owner)
+
+POST /api/approvals/:id/decision (Owner)
+
+GET /api/audit (role-scoped filters)
+
+Realtime Auth
+
+POST /api/realtime/token — short-lived signed token for Socket.IO
+
+---
+
+11) Realtime (Socket.IO) event contract (examples)
+
+activity:event
+
+{
+  "id":"evt_93f…",
+  "actor":{"id":12,"role":"admin"},
+  "action":"payout_approved",
+  "target":{"type":"payout","id":881},
+  "ip":"203.0.113.9",
+  "device":"b52a…",
+  "ts":"2025-08-13T16:00:03Z",
+  "hash":"b4a1…"
+}
+
+alert:critical
+
+{ "kind":"irs_lock", "userId":445, "ytd":60000, "ts":"…" }
+
+events:live
+
+{ "sweepId":91, "status":"live", "video":"https://…" }
+
+---
+
+12) Notifications (what gets sent)
+
+Push (Owner/Admin): role changes, price edits, IRS warning/lock, payout approvals, suspicious patterns (burst edits, failed TINs).
+
+Email:
+
+Members: approaching $600, lock notice, winner notices, payout updates.
+
+Staff: approvals waiting, error conditions, daily audit summaries (Owner).
+
+---
+
+13) Configuration (env & panels)
+
+Owner → Advanced Config drives:
+
+IRS_WARNING, IRS_LOCK, STRICT_MODE
+
+VERIFICATION_METHODS (Stripe Identity; manual toggle)
+
+TIN_MATCH_ENABLED + IRS credentials
+
+Prize distribution defaults (left blank now; Owner sets later)
+
+Keys (VAPID, hash salts), SMTP settings, retention periods, allowed geos/age
+
+Environment variables (high-level):
+
+PHP: DB creds, Stripe keys, TIN Match, VAPID, session secret, hash salt, SMTP
+
+Node: port, CORS origin, shared auth secret, Redis, VAPID
+
+---
+
+14) Deployment & Ops (what’s expected)
+
+Web: Nginx/Apache → PHP-FPM; proxy /socket.io to Node.
+
+Node: systemd service, auto-restart.
+
+TLS: Let’s Encrypt, HSTS, HTTP→HTTPS 301.
+
+Backups: nightly encrypted DB dumps; restore doc.
+
+Monitoring: access/error logs; optional WAF.
+
+---
+
+15) Quality, tests, and edge cases
+
+Unit: wallet math, distribution, threshold transitions.
+
+Integration: Stripe flows, lock/unlock, TIN pass/fail.
+
+E2E paths: event lifecycle (create→enter→close→distribute→verify→payout).
+
+Edge:
+
+User at $599.99 then wins $50 → pre-payout lock, verify, then release.
+
+Admin tries to change IRS_LOCK → goes to Owner Approval.
+
+Race conditions on close/distribute → DB transactions & idempotent jobs.
+
+---
+
+16) Glossary (quick)
+
+Verified: Stripe Identity passed.
+
+Verified+: Stripe Identity + SSN/TIN verified (TIN Match pass), assigned by Admin/Owner.
+
+Strict mode: optional Owner setting to prevent mis-configuring legal minimums.
+
+Audit hash chain: each log links to previous via SHA-256 to show tampering.
+
+---
+
+TL;DR (the correction you asked for)
+
+Verified+ = deep verification: Stripe Identity and SSN/TIN verified (TIN Match pass), assigned by Admin/Owner, unlocks high-value events.
+
+Verified = Stripe Identity only.
+
+!! COPILOT SUM FROM MAX, GEM, GPT !!
+Quad Cities Sweepstakes: Comprehensive Blueprint
+
+---
+
+Mission and Vision
+
+Quad Cities Sweepstakes is a community-focused, legally compliant sweepstakes platform dedicated to blending the excitement of cash and prize giveaways with social engagement and trust. The site’s core mission is to create a fun, safe, and interactive online destination for the Quad Cities region and beyond, while strictly adhering to U.S. sweepstakes and tax regulations. Users are rewarded for participation, loyalty, and community hosting, making the platform both entertaining and rewarding.
+
+---
+
+Technology Stack
+
+The platform uses a hybrid approach to balance performance, interactivity, and maintainability:
+
+• Frontend  
+  - PHP templates for server-rendered pages, ensuring fast initial loads and SEO friendliness.  
+  - React components within Next.js for interactive elements such as dashboards, spin wheels, and live event widgets.  
+  - Modular CSS (guest.css, members.css, admin.css) combined with responsive design techniques to support mobile and desktop layouts.  
+  - A Service Worker setup for web push notifications to Owners and Admins.
+
+• Backend  
+  - PHP 8.x with MySQL 8 for core business logic, user authentication, sweepstakes management, wallet and ledger operations, and RBAC enforcement.  
+  - Node.js 20 with Socket.IO for real-time features—live chat, event notifications, jackpot updates, and Owner/Admin activity streams.  
+  - Redis for rate limiting, queue management, and Socket.IO scaling.  
+  - Optional migration path to PostgreSQL for advanced query performance and data integrity if needed.
+
+• Integrations  
+  - Stripe Payments for all financial transactions, from Sweeps Coin purchases to subscription renewals.  
+  - Stripe Identity for user ID verification during the Verified and Verified+ flows.  
+  - IRS TIN Matching API for deep verification when users cross the statutory $600 threshold.  
+  - SendGrid or SMTP for transactional email.  
+  - Web Push API (VAPID keys) for browser notifications.
+
+---
+
+Architecture Overview
+
+The architecture is modular and event-driven:
+
+1. User actions on the frontend are sent to the PHP backend via HTTP or AJAX.  
+2. The PHP service validates inputs, enforces roles, updates the database, and writes to the audit log.  
+3. On critical events—entries purchased, winners drawn, threshold locks—the backend emits messages to the Node.js service.  
+4. Node.js broadcasts real-time events via Socket.IO to connected clients in the appropriate namespace (/owner, /admin, /members).  
+5. Redis manages distributed locks, rate limits, and message queues to ensure reliability.  
+6. A daily cron job or database trigger handles loyalty vault transfers, subscription renewals, and backup rotations.
+
+---
+
+Roles and Permissions
+
+The RBAC model defines clear boundaries and flows:
+
+• Owner  
+  - Full control over legal thresholds, verification methods, environment secrets, audit retention, and site-wide configuration.  
+  - Can view and export all audit logs, including Admin and Mod actions, and approve or reject any Admin-proposed changes.
+
+• Admin  
+  - Manages sweepstakes, VIP/CH tiers, user roles (except Owner), and financial settings.  
+  - Proposes legal or compliance changes that enter an Owner approval queue.  
+  - Can view audit logs for Mods, CH tiers, VIP tiers, and all Member actions up to Verified+ status.
+
+• Moderator  
+  - Handles content moderation: chat messages, community sweep entries, reported issues.  
+  - Cannot modify financial settings, legal thresholds, or user tax status.
+
+• Community Host (CH) Tiers 1–3  
+  - Authorized to create, manage, and close events within tier-based limits.  
+  - Manages prize pools, submits winners for Admin approval, and views CH wallet balances.
+
+• VIP Tiers (Basic, Plus, Elite)  
+  - Subscribed members with bonus Sweeps Coins, exclusive events, and priority support.  
+  - No tracking or moderation powers.
+
+• Verified+, Verified, Unverified Members  
+  - Unverified: browse, free coin features, view-only chat.  
+  - Verified: Stripe Identity passed, access to standard paid events, limited withdrawals.  
+  - Verified+: Deep verification with Stripe Identity and IRS TIN Match, unlocking high-value events and withdrawals over $600.
+
+---
+
+Verification and Compliance
+
+Entry and withdrawal eligibility is enforced by a multi-step verification flow:
+
+1. Unverified members can earn free coins and view public content but cannot enter paid or VIP-only sweepstakes.  
+2. Verified members complete a Stripe Identity flow to confirm their real identity.  
+3. Verified+ members pay a verification fee via Stripe, submit a government ID through Stripe Identity, and provide their SSN for an IRS TIN Match. Successful matches unlock full platform capabilities and trigger audit entries.  
+4. YTD winnings are tracked per calendar year. At $500, the user receives an in-site and email warning. At $600, entries and withdrawals are locked until deep verification is completed.
+
+---
+
+Economy and Wallet System
+
+The multi-wallet design ensures transparency and flexibility:
+
+• Member Wallets  
+  - cash_balance for real money transactions.  
+  - sweeps_coins for virtual currency used in sweepstakes.  
+  - freecoins and freetickets earned via daily login, trivia, puzzles, and ads.
+
+• Loyalty Vault  
+  - Automatically reimburses part of any Stripe processing fee based on VIP tier and monthly caps.  
+  - Transfers to cash_balance upon subscription renewal or at month’s end.
+
+• Community Host Wallets  
+  - livewalletbalance holds event entry fees in escrow.  
+  - payoutwalletbalance accumulates host earnings after prize distribution.
+
+• Site and Nonprofit Wallets  
+  - Platform revenue and optional charity allocations are recorded separately.  
+  - Prize distribution templates define percentages for winners, hosts, nonprofits, and the site.
+
+---
+
+User Experience and Page Structure
+
+The site is divided into three main sections—public, member, and staff—each with clear navigation and consistent design:
+
+Public Pages  
+- Home (hero banners, featured live sweepstakes, registration CTA)  
+- Register (username, email, password, TOS consent)  
+- Login (email/password, optional 2FA for staff)  
+- VIP Info (tier benefits, pricing, subscription flow)  
+- Hosts Info (CH program overview, application CTA)  
+- Rules, Terms, FAQ, Privacy (versioned CMS pages)
+
+Member Pages  
+- Dashboard (/me) with wallet snapshot, active entries, recent wins, upcoming events, loyalty wheel CTAs  
+- Profile (/me/profile) for personal info, notification preferences, and verification status block  
+- Wallet (/me/wallet) ledger view, filters, CSV export, withdrawal request flow gated by verification  
+- Sweepstakes List (/sweeps) with filters, sorting, and category tabs (Live, Upcoming, Past)  
+- Sweepstakes Detail (/sweeps/:id) showing prize, rules, entry price, host info, and “Enter” button  
+- Friends & DMs (/me/social) with rate-limited messaging and friend requests  
+- VIP Panel (/vip) for VIP-only sweepstakes, bonus claims, and renewal status  
+- CH Dashboard (/host) with event creation tools, analytics, wallet management, and winner submission
+
+Staff Consoles  
+- Moderator Console (/mod) for reported messages, pending approvals, user flags  
+- Admin Console (/admin) offering user management, sweep creation, payout approvals, financial overview, and change request approvals  
+- Owner Console (/owner) presenting live activity feeds, audit logs, legal threshold controls, key rotation, data retention settings, and full export capabilities
+
+---
+
+Real-Time Features
+
+Powered by Socket.IO and Redis:
+
+• Live Chat  
+  - Namespaced by member and staff levels with mod controls for deleting or muting messages.  
+
+• Event Updates  
+  - Real-time “Live” status toggles, jackpot meter animations, winner announcements.  
+
+• Owner/Admin Feeds  
+  - Streams of activity:event and alert:critical messages with actor metadata, timestamps, and tamper-evident hashes.  
+
+• Push Notifications  
+  - Configurable via service workers and user preferences for critical alerts like IRS locks or large payouts.
+
+---
+
+API Surface
+
+REST and WebSocket endpoints provide a clear integration contract:
+
+• Auth: /api/auth/register, /api/auth/login, /api/auth/logout  
+• Users & Roles: /api/users/:id, /api/users/:id/role, /api/users/:id/lock  
+• Sweepstakes: /api/sweeps, /api/sweeps/:id, /api/sweeps/:id/enter  
+• Payouts: /api/payouts, /api/payouts/:id/approve  
+• Verification: /api/verify/stripe/start, /api/verify/tin, /api/verify/status  
+• Approvals & Audit: /api/approvals, /api/approvals/:id/decision, /api/audit  
+• Real-Time Token: /api/realtime/token for Socket.IO authentication  
+
+WebSocket events include activity:event, alert:critical, and events:live with documented payload structures.
+
+---
+
+Security Model
+
+Every layer enforces strong protections:
+
+• Passwords hashed with bcrypt (cost ≥ 12)  
+• Server-side RBAC for every API and page endpoint  
+• CSRF tokens on all state-changing forms  
+• Strict Content Security Policy and HTML escaping to prevent XSS  
+• HTTPS only with HSTS and modern TLS ciphers  
+• Rate limits on login attempts, entries, payouts, and DMs enforced via Redis  
+• No raw SSN or ID images stored; only Stripe references and verification status  
+
+---
+
+Audit and Logging
+
+Every critical action writes to an immutable, tamper-evident audit log:
+
+• Logs include actor ID, role, action, target, timestamp, IP, device fingerprint, parenthash, and selfhash.  
+• Daily anchors record the hash of the day’s log chain, ensuring any tampering is detectable.  
+• Admins see logs for all non-Owner actions; Owners see the full chain.  
+• Exportable CSV and filtered views for compliance reporting and 1099 generation.
+
+---
+
+Operations and Deployment
+
+A robust DevOps approach ensures uptime and reliability:
+
+• Nginx or Apache with PHP-FPM serving the main app; proxy /socket.io to Node.js.  
+• Systemd or Docker for Node.js service auto-restarts.  
+• Let’s Encrypt certificates with auto-renewal; HTTP→HTTPS 301 redirects.  
+• Nightly encrypted database backups with configurable retention (7/30/90 days).  
+• Monitoring via logs, optional WAF, and alerting for service failures.
+
+---
+
+Gamification and Extras
+
+To drive engagement and retention:
+
+• Weekend Wheel and Login Streak Wheel components with configurable prize lists and probabilities.  
+• Trivia, puzzles, and polls in a Free Sweeps Coins Zone—each module awards small SC amounts.  
+• Tier-based loyalty vault reimbursements visible on the dashboard.  
+• Special community events and pop-up notifications for new features or limited-time promos.
+
+---
+
+VIP and Community Host Ecosystem
+
+The platform rewards both members and creators:
+
+• VIP tiers unlock exclusive sweepstakes, bonus coins, and priority support, managed via Stripe subscriptions.  
+• Community Hosts (three tiers) gain dedicated dashboards to create events, manage prize pools, and track analytics.  
+• Dual-wallet system ensures host funds are securely held, distributed, and reported.  
+• All host payouts and charity allocations flow through transparent, auditable templates.
